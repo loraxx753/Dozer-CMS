@@ -1,6 +1,6 @@
 <?php
 
-class Controller_Pages extends Controller_Template
+class Controller_Pages extends Controller_Base
 {
 
 	public function action_index()
@@ -12,7 +12,13 @@ class Controller_Pages extends Controller_Template
 	public function action_about()
 	{
 		$this->template->title = 'Pages &raquo; About';
-		$this->template->content = View::forge('pages/about');
+		$data['about_me'] = \Content::load("/about/about_me");
+		$this->template->content = View::forge('pages/about', $data, false);
+	}
+	public function action_resume()
+	{
+		$this->template->title = 'Pages &raquo; About';
+		$this->template->content = View::forge('pages/resume');
 	}
 
 	public function action_contact()

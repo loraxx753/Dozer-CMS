@@ -16,10 +16,9 @@
 					<div class="navbar-inner">
 						<a class="brand" href="/">Kevin Baugh</a>
 						<ul class="nav">
-							<li class="active"><a href="/about">About</a></li>
-							<li><a href="/project">Projects</a></li>
-							<li><a href="/resume">Resume</a></li>
-							<li><a href="/contact">Contact</a></li>
+							<?php foreach($pages as $page) { ?>
+							<li<?=($currentPage == $page)?" class='active'":''?>><a href="/<?=$page?>"><?=ucwords($page)?></a></li>
+							<?php } ?>
 						</ul>
 					</div>
 				</div>

@@ -52,25 +52,30 @@ class Model_Project extends Model
 		$category = Model_Category::find($this->category);
 		if(!is_dir(DOCROOT."assets/img/projects/".$category->name))
 		{
-			File::create_dir(DOCROOT."assets/img/projects", $category->name);
-			File::create_dir(DOCROOT."assets/img/projects/".$category->name, "thumbs");
+			$old = umask(0);
+			File::create_dir(DOCROOT."assets/img/projects", $category->name, 0777);
+			chmod(DOCROOT."assets/img/projects/".$category->name, 777);
+			File::create_dir(DOCROOT."assets/img/projects/".$category->name, "thumbs", 0777);
 		}
 		$esplode = explode(".", $file['name']);
 		$extention = array_pop($esplode);
 		$safeName = Inflector::friendly_title($this->name, "_", true).".".$extention;
 
-		File::rename($file['tmp_name'], DOCROOT."assets/img/projects/".$category->name."/".$safeName);
 
+		File::copy($file['tmp_name'], DOCROOT."assets/img/projects/".$category->name."/".$safeName);
 		Image::load(DOCROOT."assets/img/projects/".$category->name."/".$safeName)
 		    ->crop(0, 0, 800, 200)
-		    ->save(DOCROOT."assets/img/projects/".$category->name."/".$safeName);
+		    ->save(DOCROOT."assets/img/projects/".$category->name."/".$safeName, 777);
 
 		Image::load(DOCROOT."assets/img/projects/".$category->name."/".$safeName)
 		    ->crop(0, 0, 100, 100)
 		    ->rounded(10)
-		    ->save(DOCROOT."assets/img/projects/".$category->name."/thumbs/".$safeName);
+		    ->save(DOCROOT."assets/img/projects/".$category->name."/thumbs/".$safeName, 777);
 
 		$this->image = $safeName;
+
+		umask($old);
+
 	}
 
 	public function thumbnail() {

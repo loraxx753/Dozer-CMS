@@ -1,8 +1,9 @@
 <?php
-class Controller_Admin_Project extends Controller_Admin{
+class Controller_Admin_Project extends Controller_Admin
+{
 
 	public function action_index()
-	{
+	{	
 		$data['projects'] = Model_Project::find()->related("category")->get();
 		$this->template->title = "Projects";
 		$this->template->content = View::forge('project/index', $data);
