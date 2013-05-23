@@ -29,4 +29,14 @@ class Model_Category extends Model
 		return $val;
 	}
 
+	protected static $_has_many = array(
+    'projects' => array(
+        'key_from' => 'id',
+        'model_to' => 'Model_Project',
+        'key_to' => 'category',
+        'cascade_save' => true,
+        'cascade_delete' => false,
+    )
+);
+
 }

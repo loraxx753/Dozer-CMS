@@ -7,3 +7,24 @@ footer p {
 .projects td {
 	vertical-align: middle;
 }
+
+.project_overview {
+	text-align: center;
+	border-radius: 10px;
+	border: 1px solid #acacac;
+	padding: 10px;
+
+background-image: linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
+background-image: -o-linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
+background-image: -moz-linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
+background-image: -webkit-linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
+background-image: -ms-linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
+
+background-image: -webkit-gradient(
+	linear,
+	right bottom,
+	left top,
+	color-stop(0.17, rgb(163,3,3)),
+	color-stop(0.8, rgb(191,42,42))
+);
+}

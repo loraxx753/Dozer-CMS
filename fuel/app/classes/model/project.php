@@ -10,6 +10,7 @@ class Model_Project extends Model
 		'category',
 		'order',
 		'image',
+		'overview',
 		'created_at',
 		'updated_at',
 	);
@@ -47,42 +48,72 @@ class Model_Project extends Model
 	    )
 	);
 
-	public function create_file($file)
+	public function create_category_folders($folderNumber = null)
 	{
-		$category = Model_Category::find($this->category);
+		if(!$folderNumber) {
+			$category = Model_Category::find($this->category);
+		}
+		else
+		{
+			$category = Model_Category::find($folderNumber);			
+		}
+		$old = umask(0);
 		if(!is_dir(DOCROOT."assets/img/projects/".$category->name))
 		{
-			$old = umask(0);
-			File::create_dir(DOCROOT."assets/img/projects", $category->name, 0777);
+			File::create_dir(DOCROOT."assets/img/projects/", $category->name, 0777);
 			chmod(DOCROOT."assets/img/projects/".$category->name, 777);
 			File::create_dir(DOCROOT."assets/img/projects/".$category->name, "thumbs", 0777);
 		}
+		umask($old);		
+	}
+	public function create_file($file)
+	{
+		$old = umask(0);
+
+		$this->create_category_folders();
+
 		$esplode = explode(".", $file['name']);
 		$extention = array_pop($esplode);
 		$safeName = Inflector::friendly_title($this->name, "_", true).".".$extention;
 
-
+		chmod($file['tmp_name'], 777);
 		File::copy($file['tmp_name'], DOCROOT."assets/img/projects/".$category->name."/".$safeName);
+		chmod(DOCROOT."assets/img/projects/".$category->name."/".$safeName, 0777);
 		Image::load(DOCROOT."assets/img/projects/".$category->name."/".$safeName)
 		    ->crop(0, 0, 800, 200)
-		    ->save(DOCROOT."assets/img/projects/".$category->name."/".$safeName, 777);
+		    ->save(DOCROOT."assets/img/projects/".$category->name."/".$safeName, 0777);
 
 		Image::load(DOCROOT."assets/img/projects/".$category->name."/".$safeName)
 		    ->crop(0, 0, 100, 100)
 		    ->rounded(10)
-		    ->save(DOCROOT."assets/img/projects/".$category->name."/thumbs/".$safeName, 777);
+		    ->save(DOCROOT."assets/img/projects/".$category->name."/thumbs/".$safeName, 0777);
 
 		$this->image = $safeName;
 
 		umask($old);
-
 	}
 
 	public function thumbnail() {
-		return Asset::img("projects/".$this->category->name."/thumbs/".$this->image);
+		if(is_object($this->category))
+		{
+			$cat = $this->category->name;
+		}
+		else
+		{
+			$cat = Model_Category::find($this->category)->name;
+		}
+		return Asset::img("projects/".$cat."/thumbs/".$this->image);
 	}
 	public function screenshot() {
-		return Asset::img("projects/".$this->category->name."/".$this->image);
+		if(is_object($this->category))
+		{
+			$cat = $this->category->name;
+		}
+		else
+		{
+			$cat = Model_Category::find($this->category)->name;
+		}
+		return Asset::img("projects/".$cat."/".$this->image);
 	}
 
 }

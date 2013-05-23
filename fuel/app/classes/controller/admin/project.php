@@ -4,6 +4,7 @@ class Controller_Admin_Project extends Controller_Admin
 
 	public function action_index()
 	{	
+		$data = array();
 		$data['projects'] = Model_Project::find()->related("category")->get();
 		$this->template->title = "Projects";
 		$this->template->content = View::forge('project/index', $data);
@@ -38,6 +39,7 @@ class Controller_Admin_Project extends Controller_Admin
 					'description' => Input::post('description'),
 					'category' => Input::post('category'),
 					'order' => Input::post('order'),
+					'overview' => Input::post('overview'),
 				));
 
 				$project->create_file(Input::file('image'));
@@ -84,10 +86,23 @@ class Controller_Admin_Project extends Controller_Admin
 
 		if ($val->run())
 		{
+			if($project->category != Input::post('category'))
+			{
+				$project->create_category_folders(Input::post('category'));
+				File::rename(
+					DOCROOT."assets/img/projects/".Model_Category::find($project->category)->name."/".$project->image, 
+					DOCROOT."assets/img/projects/".Model_Category::find(Input::post('category'))->name."/".$project->image
+				);
+				File::rename(
+					DOCROOT."assets/img/projects/".Model_Category::find($project->category)->name."/thumbs/".$project->image, 
+					DOCROOT."assets/img/projects/".Model_Category::find(Input::post('category'))->name."/thumbs/".$project->image
+				);
+			}
 			$project->name = Input::post('name');
 			$project->description = Input::post('description');
 			$project->category = Input::post('category');
 			$project->order = Input::post('order');
+			$project->overview = Input::post('overview');
 
 			if ($project->save())
 			{
@@ -123,7 +138,7 @@ class Controller_Admin_Project extends Controller_Admin
 		}
 
 		$this->template->title = "Projects";
-		$this->template->content = View::forge('project/edit');
+		$this->template->content = View::forge('project/edit', $data);
 
 	}
 

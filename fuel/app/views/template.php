@@ -20,6 +20,11 @@
 							<li<?=($currentPage == $page)?" class='active'":''?>><a href="/<?=$page?>"><?=ucwords($page)?></a></li>
 							<?php } ?>
 						</ul>
+						<?php if(\Auth::member(100)) { ?>
+						<ul class="nav pull-right">
+							<li><a class="pull-right" href="/logout">Logout</a></li>
+						</ul>
+						<?php } ?>
 					</div>
 				</div>
 			</div>

@@ -10,6 +10,14 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<?php echo Form::label('Overview', 'overview', array('class'=>'control-label')); ?>
+
+			<div class="controls">
+				<?php echo Form::input('overview', Input::post('overview', isset($project) ? $project->name : ''), array('class' => 'span4', 'placeholder'=>'Overview')); ?>
+
+			</div>
+		</div>
+		<div class="control-group">
 			<?php echo Form::label('Description', 'description', array('class'=>'control-label')); ?>
 
 			<div class="controls">
@@ -21,8 +29,12 @@
 			<?php echo Form::label('Category', 'category', array('class'=>'control-label')); ?>
 
 			<div class="controls">
-				<?php echo Form::select('category', Input::post('category', isset($project) ? $project->category : ''), $categories); ?>
-
+				<?php 
+				if(!isset($categories)) { ?>
+					<a class="btn btn-success" href="/admin/category/create">Create A Category</a>
+				<?php } else {
+				echo Form::select('category', Input::post('category', isset($project) ? $project->category : ''), $categories); ?>
+				<?php } ?>
 			</div>
 		</div>
 		<div class="control-group">
