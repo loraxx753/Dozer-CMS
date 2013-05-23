@@ -68,6 +68,8 @@ class Model_Project extends Model
 	}
 	public function create_file($file)
 	{
+
+		$category = Model_Category::find($this->category);			
 		$old = umask(0);
 
 		$this->create_category_folders();

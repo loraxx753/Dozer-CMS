@@ -28,3 +28,13 @@ background-image: -webkit-gradient(
 	color-stop(0.8, rgb(191,42,42))
 );
 }
+
+/*.right-pipe:after {
+	content: " | ";
+}
+.right-pipe a {
+	padding-right: 0 !important;
+}
+.right-pipe + li a{
+	padding-left: 0 !important;
+}*/

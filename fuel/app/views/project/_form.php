@@ -52,10 +52,14 @@
 
 			</div>
 		</div>
+		<?php if(isset($categories)) { ?>
 		<div class="control-group">
 			<label class='control-label'>&nbsp;</label>
 			<div class='controls'>
 				<?php echo Form::submit('submit', 'Save', array('class' => 'btn btn-primary')); ?>			</div>
 		</div>
+		<?php } else { ?>
+		<p> You have to create a category first!</p>
+		<?php }?>
 	</fieldset>
 <?php echo Form::close(); ?>

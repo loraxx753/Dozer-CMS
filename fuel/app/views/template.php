@@ -22,6 +22,7 @@
 						</ul>
 						<?php if(\Auth::member(100)) { ?>
 						<ul class="nav pull-right">
+							<li><a class="pull-right right-pipe" href="/admin">Admin Panel</a></li>
 							<li><a class="pull-right" href="/logout">Logout</a></li>
 						</ul>
 						<?php } ?>

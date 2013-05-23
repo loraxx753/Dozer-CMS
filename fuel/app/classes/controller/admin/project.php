@@ -63,6 +63,7 @@ class Controller_Admin_Project extends Controller_Admin
 		}
 
 		$categories = Model_Category::find('all');
+		$data = array();
 		foreach ($categories as $key => $value) {
 			$data['categories'][$value->id] = $value->name;
 		}
