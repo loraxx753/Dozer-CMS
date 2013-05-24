@@ -1,3 +1,32 @@
+body {
+	margin: 0;
+	padding: 0; 
+}
+.center {
+	text-align: center;
+	opacity: 0.5;
+}
+
+.navbar-inner {
+background-image: linear-gradient(bottom, rgb(153,56,74) 30%, rgb(143,25,45) 83%);
+background-image: -o-linear-gradient(bottom, rgb(153,56,74) 30%, rgb(143,25,45) 83%);
+background-image: -moz-linear-gradient(bottom, rgb(153,56,74) 30%, rgb(143,25,45) 83%);
+background-image: -webkit-linear-gradient(bottom, rgb(153,56,74) 30%, rgb(143,25,45) 83%);
+background-image: -ms-linear-gradient(bottom, rgb(153,56,74) 30%, rgb(143,25,45) 83%);
+
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.3, rgb(153,56,74)),
+	color-stop(0.83, rgb(143,25,45))
+);}
+
+.navbar .brand, .navbar .nav > li > a {
+	color: #fff6ca;
+	text-shadow: 0 1px 0 #918f83;
+}
+
 footer p {
 	font-style: italic;
 	font-size: .9em;
