@@ -8,7 +8,7 @@
 			<th>Name</th>
 			<th>Description</th>
 			<th>Category</th>
-			<th>Order</th>
+			<th>Languages</th>
 			<th>&nbsp;</th>
 		</tr>
 	</thead>
@@ -19,7 +19,13 @@
 			<td><?php echo $project->name; ?></td>
 			<td><?php echo $project->description; ?></td>
 			<td><?php echo $project->category->name; ?></td>
-			<td><?php echo $project->order; ?></td>
+			<td>
+				<ul>
+					<?php foreach ($project->languages as $language) { ?>
+						<li><?php echo $language->name; ?></li>
+					<?php } ?>
+				</ul>
+			</td>
 			<td>
 				<?php echo Html::anchor('/admin/project/view/'.$project->id, '<i class="icon-eye-open" title="View"></i>'); ?> |
 				<?php echo Html::anchor('/admin/project/edit/'.$project->id, '<i class="icon-wrench" title="Edit"></i>'); ?> |

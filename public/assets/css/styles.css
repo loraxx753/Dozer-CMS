@@ -7,6 +7,12 @@ body {
 	opacity: 0.5;
 }
 
+.test {
+	height: 100px;
+	width: 100%;
+	border: dashed 2px #000;
+}
+
 .navbar-inner {
 background-image: linear-gradient(bottom, rgb(153,56,74) 30%, rgb(143,25,45) 83%);
 background-image: -o-linear-gradient(bottom, rgb(153,56,74) 30%, rgb(143,25,45) 83%);
@@ -43,27 +49,21 @@ footer p {
 	border: 1px solid #acacac;
 	padding: 10px;
 
-background-image: linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
-background-image: -o-linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
-background-image: -moz-linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
-background-image: -webkit-linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
-background-image: -ms-linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
+	background-image: linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
+	background-image: -o-linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
+	background-image: -moz-linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
+	background-image: -webkit-linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
+	background-image: -ms-linear-gradient(right bottom, rgb(163,3,3) 17%, rgb(191,42,42) 80%);
 
-background-image: -webkit-gradient(
-	linear,
-	right bottom,
-	left top,
-	color-stop(0.17, rgb(163,3,3)),
-	color-stop(0.8, rgb(191,42,42))
-);
+	background-image: -webkit-gradient(
+		linear,
+		right bottom,
+		left top,
+		color-stop(0.17, rgb(163,3,3)),
+		color-stop(0.8, rgb(191,42,42))
+	);
 }
 
-/*.right-pipe:after {
-	content: " | ";
+.right-margin-out  {
+	margin-right: 20px;
 }
-.right-pipe a {
-	padding-right: 0 !important;
-}
-.right-pipe + li a{
-	padding-left: 0 !important;
-}*/

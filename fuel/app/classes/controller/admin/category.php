@@ -38,6 +38,9 @@ class Controller_Admin_Category extends Controller_Admin{
 
 				if ($category and $category->save())
 				{
+
+					$category->create_folder();
+
 					Session::set_flash('success', 'Added category #'.$category->id.'.');
 
 					Response::redirect('/admin/category');
@@ -73,10 +76,12 @@ class Controller_Admin_Category extends Controller_Admin{
 
 		if ($val->run())
 		{
+			$oldFolderName = $category->name;
 			$category->name = Input::post('name');
 
 			if ($category->save())
 			{
+				$category->edit_folder($oldFolderName);
 				Session::set_flash('success', 'Updated category #' . $id);
 
 				Response::redirect('/admin/category');
@@ -112,6 +117,7 @@ class Controller_Admin_Category extends Controller_Admin{
 		if ($category = Model_Category::find($id))
 		{
 			$category->delete();
+			
 
 			Session::set_flash('success', 'Deleted category #'.$id);
 		}

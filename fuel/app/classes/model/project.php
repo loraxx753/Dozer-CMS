@@ -26,13 +26,14 @@ class Model_Project extends Model
 		),
 	);
 
+	protected static $_many_many = array('languages');
+
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
 		$val->add_field('name', 'Name', 'required|max_length[255]');
 		$val->add_field('description', 'Description', 'required|max_length[255]');
 		$val->add_field('category', 'Category', 'required|valid_string[numeric]');
-		$val->add_field('order', 'Order', 'required|valid_string[numeric]');
 
 		return $val;
 	}
@@ -47,6 +48,24 @@ class Model_Project extends Model
 	        'cascade_delete' => false,
 	    )
 	);
+
+	public function move_image_assets($oldFolderId, $project)
+	{
+		$newFolderName = Model_Category::find($project->category)->name;
+		$oldFolderName = Model_Category::find($oldFolderId)->name;
+
+		$project->create_category_folders($project->category);
+		File::rename(
+			DOCROOT."assets/img/projects/".$oldFolderName."/".$project->image, 
+			DOCROOT."assets/img/projects/".$newFolderName."/".$project->image
+		);
+		File::rename(
+			DOCROOT."assets/img/projects/".$oldFolderName."/thumbs/".$project->image, 
+			DOCROOT."assets/img/projects/".$newFolderName."/thumbs/".$project->image
+		);
+
+
+	}
 
 	public function create_category_folders($folderNumber = null)
 	{
@@ -64,7 +83,7 @@ class Model_Project extends Model
 			chmod(DOCROOT."assets/img/projects/".$category->name, 777);
 			File::create_dir(DOCROOT."assets/img/projects/".$category->name, "thumbs", 0777);
 		}
-		umask($old);		
+		umask($old);
 	}
 	public function create_file($file)
 	{
@@ -95,7 +114,7 @@ class Model_Project extends Model
 		umask($old);
 	}
 
-	public function thumbnail() {
+	public function thumbnail($extra = array()) {
 		if(is_object($this->category))
 		{
 			$cat = $this->category->name;
@@ -104,9 +123,9 @@ class Model_Project extends Model
 		{
 			$cat = Model_Category::find($this->category)->name;
 		}
-		return Asset::img("projects/".$cat."/thumbs/".$this->image);
+		return Asset::img("projects/".$cat."/thumbs/".$this->image, $extra);
 	}
-	public function screenshot() {
+	public function screenshot($extra = array()) {
 		if(is_object($this->category))
 		{
 			$cat = $this->category->name;
@@ -115,7 +134,7 @@ class Model_Project extends Model
 		{
 			$cat = Model_Category::find($this->category)->name;
 		}
-		return Asset::img("projects/".$cat."/".$this->image);
+		return Asset::img("projects/".$cat."/".$this->image, $extra);
 	}
 
 }

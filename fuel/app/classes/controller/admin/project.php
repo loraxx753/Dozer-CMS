@@ -34,13 +34,19 @@ class Controller_Admin_Project extends Controller_Admin
 			
 			if ($val->run())
 			{
+				$count = Model_Project::find()->where("category", Input::post("category"))->count();
 				$project = Model_Project::forge(array(
 					'name' => Input::post('name'),
 					'description' => Input::post('description'),
 					'category' => Input::post('category'),
-					'order' => Input::post('order'),
+					'order' => $count++,
 					'overview' => Input::post('overview'),
 				));
+
+
+				foreach (Input::post("language") as $languageId) {
+					$project->languages[] = Model_Language::find($languageId);
+				}
 
 				$project->create_file(Input::file('image'));
 
@@ -63,10 +69,16 @@ class Controller_Admin_Project extends Controller_Admin
 		}
 
 		$categories = Model_Category::find('all');
+		$languages = Model_Language::find('all');
 		$data = array();
 		foreach ($categories as $key => $value) {
 			$data['categories'][$value->id] = $value->name;
 		}
+		foreach ($languages as $key => $value) {
+			$data['languages'][$value->id] = $value->name;
+		}
+
+		$data['options'] = $data;
 
 		$this->template->title = "Projects";
 		$this->template->content = View::forge('project/create', $data);
@@ -104,6 +116,10 @@ class Controller_Admin_Project extends Controller_Admin
 			$project->category = Input::post('category');
 			$project->order = Input::post('order');
 			$project->overview = Input::post('overview');
+			$project->languages = array();
+			foreach (Input::post("language") as $languageId) {
+				$project->languages[] = Model_Language::find($languageId);
+			}
 
 			if ($project->save())
 			{
@@ -134,9 +150,16 @@ class Controller_Admin_Project extends Controller_Admin
 		}
 
 		$categories = Model_Category::find('all');
+		$languages = Model_Language::find('all');
 		foreach ($categories as $key => $value) {
 			$data['categories'][$value->id] = $value->name;
 		}
+		foreach ($languages as $key => $value) {
+			$data['languages'][$value->id] = $value->name;
+		}
+
+		$data['options'] = $data;
+
 
 		$this->template->title = "Projects";
 		$this->template->content = View::forge('project/edit', $data);

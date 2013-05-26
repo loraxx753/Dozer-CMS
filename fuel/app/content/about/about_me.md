@@ -1,12 +1,6 @@
-## This is something
+## A Little About Me
 
-This is a paragraph
+My name is Kevin Baugh, and I make things work. I love playing around in programming to see what can be done with it. I'm current living in Orlando, Florida with [my dog Onyon](http://imgur.com/smjt3BI.png).
 
-* list
-* list
-* list
-* list
-* list
+This page really serves as a way to get to know me and the work that I can do. I'm fairly fluent with PHP, JavaScript, Python and a lot of their various flavors (CoffeeScript, jQuery, FuelPHP, CodeIgnightor, Django), although I know there's a lot more to learn.
 
-
-<p>A test of some inserted code</p>

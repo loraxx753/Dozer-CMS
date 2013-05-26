@@ -30,13 +30,44 @@ class Model_Category extends Model
 	}
 
 	protected static $_has_many = array(
-    'projects' => array(
-        'key_from' => 'id',
-        'model_to' => 'Model_Project',
-        'key_to' => 'category',
-        'cascade_save' => true,
-        'cascade_delete' => false,
-    )
-);
+	    'projects' => array(
+	        'key_from' => 'id',
+	        'model_to' => 'Model_Project',
+	        'key_to' => 'category',
+	        'cascade_save' => true,
+	        'cascade_delete' => false,
+	    )
+	);
+	
+	public function create_folder()
+	{	
+
+		$old = umask(0);
+		if(!is_dir(DOCROOT."assets/img/projects/".$this->name))
+		{
+			File::create_dir(DOCROOT."assets/img/projects/", $this->name, 0777);
+			chmod(DOCROOT."assets/img/projects/".$this->name, 777);
+			File::create_dir(DOCROOT."assets/img/projects/".$this->name, "thumbs", 0777);
+		}
+		umask($old);
+	}
+
+	public function edit_folder($oldFolderName)
+	{	
+
+		$old = umask(0);
+		if(is_dir(DOCROOT."assets/img/projects/".$oldFolderName))
+		{
+			File::rename(DOCROOT."assets/img/projects/".$oldFolderName, DOCROOT."assets/img/projects/".$this->name);
+			chmod(DOCROOT."assets/img/projects/".$this->name, 777);
+		}
+		umask($old);
+	}
+
+	public function delete($cascade = null, $use_transaction = false)
+	{
+		parent::delete($cascade, $use_transaction);
+		File::delete_dir(DOCROOT."assets/img/projects/".$this->name);
+	}
 
 }

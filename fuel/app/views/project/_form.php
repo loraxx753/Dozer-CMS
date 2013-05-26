@@ -1,4 +1,11 @@
 <?php echo Form::open(array("enctype" => "multipart/form-data", "class"=>"form-horizontal")); ?>
+		<?php if(isset($project->image)) {  ?>
+		<div class="control-group">
+		<?php
+			echo $project->screenshot(array("class" => "img-rouned img-polaroid"));
+		?>
+		</div>
+		<?php } ?>
 
 	<fieldset>
 		<div class="control-group">
@@ -38,17 +45,31 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<?php echo Form::label('Order', 'order', array('class'=>'control-label')); ?>
+			<?php echo Form::label('Languages', 'languages', array('class'=>'control-label')); ?>
 
 			<div class="controls">
-				<?php echo Form::input('order', Input::post('order', isset($project) ? $project->order : ''), array('class' => 'span4', 'placeholder'=>'Order')); ?>
-
+				<?php 
+				if(!isset($languages)) { ?>
+					<a class="btn btn-success" href="/admin/language/create">Add A Language</a>
+				<?php } else {
+					$selectedLanguages = array();
+					if(isset($project->languages))
+					{
+						foreach($project->languages as $language)
+						{
+							$selectedLanguages[] = $language->id;
+						}
+					}
+				echo Form::select('language', Input::post('language', isset($project) ? $selectedLanguages : ''), $languages, array("multiple" => "multiple")); ?>
+				<?php } ?>
 			</div>
+		</div>
 		<div class="control-group">
-			<?php echo Form::label('Image', 'order', array('class'=>'control-label')); ?>
-
+			<?php echo Form::label('Image', 'order', array('class'=>'control-label')); 
+			
+				?>
 			<div class="controls">
-				<?php echo Form::file('image'); ?>
+				<?php echo ((isset($project->image)) ? $project->thumbnail() : ''." ".Form::file('image')); ?>
 
 			</div>
 		</div>

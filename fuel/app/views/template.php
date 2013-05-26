@@ -48,7 +48,16 @@
 			<p class="muted">Copyright &copy; 2013 Kevin Baugh</p>
 		</footer>
 	</div>
-	<?php echo Asset::js(array('//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js','bootstrap.js')); ?>
+	<?php echo Asset::js(array(
+		'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js',
+		'bootstrap.js', 
+		'html5sortable/jquery.sortable.js', 
+		'init.js',
+		"jquery-markdown/markdown/Markdown.Converter.js",
+		"jquery-markdown/markdown/Markdown.Sanitizer.js",
+		"jquery-markdown/markdown/Markdown.Editor.js",
+		"jquery-markdown/markdown/jquery.markdown.js"
+	)); ?>
 
 </body>
 </html>

@@ -1,34 +1,41 @@
 
-<?php foreach($categories as $category) { ?>
-<h2><?=$category->name?></h2>
-<hr />
-<div class="row">
-	<div class="span12">
-		<?php if(!$category->projects) { ?>
-		<p>There are no projects in this category</p>
-
-
-
-		<?php }
-		else { 
-			foreach ($category->projects as $project) { ?>
-		<div class="row">
-			<div class="span2">
-				<?=$project->thumbnail()?>
-			</div>
-			<div class="span4">
-				<h3><?=$project->name?></h3>
-			</div>
-			<div class="span6">
-				<?=$project->overview?></p>
+	<?php foreach($categories as $category) { ?>
+	<h2><?=$category->name?></h2>
+	<hr />
+	<div class="row connected sortable" data-id="<?=$category->id?>">
+			<?php if(!$category->projects) { ?>
+		<div class="row empty-category disabled">
+			<div class="span12">
+				<p>There are no projects in this category</p>
 			</div>
 		</div>
-		<hr />
-			<?php } // end foreach 
-		} // end else?>
-	</div>
+
+
+
+			<?php }
+			else { 
+				foreach ($category->projects as $project) { ?>
+		<div class="row" data-id="<?=$project->id?>">
+			<div class="span12">
+				<div class="media">
+				  <a class="pull-left" href="/projects/detail/<?=Inflector::friendly_title($project->name,'-',true)?>">
+				    <?=$project->thumbnail(array("class" => "media-object"))?>
+				  </a>
+				  <div class="media-body">
+				    <h4 class="media-heading"><?=$project->name?></h4>
+					<p><?=$project->overview?></p>
+				  </div>
+					<ul class="nav nav-pills languages">
+				  	<?php foreach ($project->languages as $language) { ?>
+					  <li><a href="#" data-type="<?=$language->name?>"><?=$language->name?></a></li>
+				  	<?php } ?>
+					</ul>
+				</div>
+			</div>
+		</div>
+				<?php } // end foreach 
+			} // end else?>
 </div>
 
 
-
-<?php } ?>
+<?php } //end foreach ?>
