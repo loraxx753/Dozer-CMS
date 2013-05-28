@@ -16,7 +16,7 @@ class Controller_Admin extends Controller_Base
 		$data['tags'] = Model_Tag::find()->get();
 
 		$this->template->title = 'Admin &raquo; Index';
-		$this->template->content = View::forge('admin/index', $data);
+		$this->template->content = View::forge('admin/index', $data, false);
 	}
 
 	public function post_update($type)
@@ -45,10 +45,21 @@ class Controller_Admin extends Controller_Base
 				$movedProject->category = Input::post("category");
 				$movedProject->order = (int)Input::post("newIndex")+1;
 				$movedProject->save();
-				var_dump($movedProject);
 
 				$movedProject->move_image_assets($oldFolderId, $movedProject);
+				break;
+			case "css":
+				$name = Input::post("name");
+				if($name != "reset")
+				{
+					\Config::set("portfolio.bootswatch", $name);
+				}
+				else
+				{
+					\Config::set("portfolio.bootswatch", null);
+				}
+				\Config::save("portfolio", "portfolio");
+				break;
 		}
 	}
-
 }

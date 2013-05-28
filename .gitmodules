@@ -9,7 +9,7 @@
 	url = git://github.com/fuel/orm.git
 [submodule "fuel/packages/auth"]
 	path = fuel/packages/auth
-	url = git://github.com/fuel/auth.git
+	url = https://github.com/loraxx753/auth.git
 [submodule "fuel/packages/oil"]
 	path = fuel/packages/oil
 	url = git://github.com/fuel/oil.git
@@ -22,3 +22,6 @@
 [submodule "public/assets/js/jquery-markdown"]
 	path = public/assets/js/jquery-markdown
 	url = https://github.com/arhpreston/jquery-markdown.git
+[submodule "public/assets/js/html5sortable"]
+	path = public/assets/js/html5sortable
+	url = https://github.com/loraxx753/html5sortable.git

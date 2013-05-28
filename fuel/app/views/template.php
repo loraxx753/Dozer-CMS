@@ -3,8 +3,16 @@
 <head>
 	<meta charset="utf-8">
 	<title><?php echo $title; ?></title>
-	<?php echo Asset::css(array('bootstrap.css'), array("class" => "bootstrap")); ?>
-	<?php echo Asset::css(array('styles.css'), array("class" => "custom_css")); ?>
+	<?php if($current_css = \Config::get("portfolio.bootswatch")) { 
+		echo Asset::css(array('bootswatch/'.$current_css.'/bootstrap.min.css'), array("class" => "bootstrap")); 	
+		$options = array("class" => "custom_css", "disabled" => true);
+	} else {
+		echo Asset::css(array('bootstrap.css'), array("class" => "bootstrap")); 
+		$options = array("class" => "custom_css");
+	}
+
+	?>
+	<?php echo Asset::css(array('styles.css'), $options); ?>
 </head>
 <body>
 	<div class="navbar">
@@ -49,6 +57,12 @@
 			<p class="muted">Copyright &copy; 2013 Kevin Baugh</p>
 		</footer>
 	</div>
+	<script>
+	<?php
+		$current_css = (\Config::get("portfolio.bootswatch")) ? \Config::get("portfolio.bootswatch") : "default";
+	?>
+		var current_css="<?=$current_css?>";
+	</script>
 	<?php echo Asset::js(array(
 		'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js',
 		'bootstrap.js', 
