@@ -19,9 +19,6 @@
 [submodule "fuel/packages/email"]
 	path = fuel/packages/email
 	url = git://github.com/fuel/email.git
-[submodule "public/assets/js/html5sortable"]
-	path = public/assets/js/html5sortable
-	url = https://github.com/farhadi/html5sortable.git
 [submodule "public/assets/js/jquery-markdown"]
 	path = public/assets/js/jquery-markdown
 	url = https://github.com/arhpreston/jquery-markdown.git
