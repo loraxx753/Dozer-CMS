@@ -1,1 +1,1 @@
-<p>Resume</p>
+<?=$resume?>

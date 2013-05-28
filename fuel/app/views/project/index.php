@@ -8,7 +8,7 @@
 			<th>Name</th>
 			<th>Description</th>
 			<th>Category</th>
-			<th>Languages</th>
+			<th>Tags</th>
 			<th>&nbsp;</th>
 		</tr>
 	</thead>
@@ -21,8 +21,8 @@
 			<td><?php echo $project->category->name; ?></td>
 			<td>
 				<ul>
-					<?php foreach ($project->languages as $language) { ?>
-						<li><?php echo $language->name; ?></li>
+					<?php foreach ($project->tags as $tag) { ?>
+						<li><?php echo $tag->name; ?></li>
 					<?php } ?>
 				</ul>
 			</td>

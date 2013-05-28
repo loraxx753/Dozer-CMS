@@ -45,22 +45,22 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<?php echo Form::label('Languages', 'languages', array('class'=>'control-label')); ?>
+			<?php echo Form::label('Tags', 'tags', array('class'=>'control-label')); ?>
 
 			<div class="controls">
 				<?php 
-				if(!isset($languages)) { ?>
-					<a class="btn btn-success" href="/admin/language/create">Add A Language</a>
+				if(!isset($tags)) { ?>
+					<a class="btn btn-success" href="/admin/tag/create">Add A Tag</a>
 				<?php } else {
-					$selectedLanguages = array();
-					if(isset($project->languages))
+					$selectedTags = array();
+					if(isset($project->tags))
 					{
-						foreach($project->languages as $language)
+						foreach($project->tags as $tag)
 						{
-							$selectedLanguages[] = $language->id;
+							$selectedTags[] = $tag->id;
 						}
 					}
-				echo Form::select('language', Input::post('language', isset($project) ? $selectedLanguages : ''), $languages, array("multiple" => "multiple")); ?>
+				echo Form::select('tag', Input::post('tag', isset($project) ? $selectedTags : ''), $tags, array("multiple" => "multiple")); ?>
 				<?php } ?>
 			</div>
 		</div>
@@ -73,6 +73,15 @@
 
 			</div>
 		</div>
+		<div class="control-group">
+			<?php echo Form::label('Link', 'link', array('class'=>'control-label')); ?>
+
+			<div class="controls">
+				<?php echo Form::input('link', Input::post('name', isset($project) ? $project->link : ''), array('class' => 'span4', 'placeholder'=>'http://www.example.com')); ?>
+
+			</div>
+		</div>
+
 		<?php if(isset($categories)) { ?>
 		<div class="control-group">
 			<label class='control-label'>&nbsp;</label>

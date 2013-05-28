@@ -18,7 +18,8 @@ class Controller_Pages extends Controller_Base
 	public function action_resume()
 	{
 		$this->template->title = 'Pages &raquo; About';
-		$this->template->content = View::forge('pages/resume');
+		$data['resume'] = \Content::load("/resume/resume");
+		$this->template->content = View::forge('pages/resume', $data, false);
 	}
 
 	public function action_contact()

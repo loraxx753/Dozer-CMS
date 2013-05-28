@@ -9,5 +9,7 @@ return array(
 	'admin-login' => '/pages/login',
 	'logout'      => '/pages/logout',
 	
+	'projects/sort/:sortables' => 'projects/index/$1',
+
 	'hello(/:name)?' => array('welcome/hello', 'name' => 'hello'),
 );

@@ -43,9 +43,14 @@ class Controller_Admin_Project extends Controller_Admin
 					'overview' => Input::post('overview'),
 				));
 
+				if(Input::post('link') != '')
+				{
+					$project->link = Input::post('link');
+				}
 
-				foreach (Input::post("language") as $languageId) {
-					$project->languages[] = Model_Language::find($languageId);
+
+				foreach (Input::post("tag") as $tagId) {
+					$project->tags[] = Model_Tag::find($tagId);
 				}
 
 				$project->create_file(Input::file('image'));
@@ -69,13 +74,13 @@ class Controller_Admin_Project extends Controller_Admin
 		}
 
 		$categories = Model_Category::find('all');
-		$languages = Model_Language::find('all');
+		$tags = Model_Tag::find('all');
 		$data = array();
 		foreach ($categories as $key => $value) {
 			$data['categories'][$value->id] = $value->name;
 		}
-		foreach ($languages as $key => $value) {
-			$data['languages'][$value->id] = $value->name;
+		foreach ($tags as $key => $value) {
+			$data['tags'][$value->id] = $value->name;
 		}
 
 		$data['options'] = $data;
@@ -116,9 +121,11 @@ class Controller_Admin_Project extends Controller_Admin
 			$project->category = Input::post('category');
 			$project->order = Input::post('order');
 			$project->overview = Input::post('overview');
-			$project->languages = array();
-			foreach (Input::post("language") as $languageId) {
-				$project->languages[] = Model_Language::find($languageId);
+			$project->tags = array();
+			$project->link = (Input::post('link') == '') ? null : Input::post('link');
+
+			foreach (Input::post("tag") as $tagId) {
+				$project->tags[] = Model_Tag::find($tagId);
 			}
 
 			if ($project->save())
@@ -150,12 +157,12 @@ class Controller_Admin_Project extends Controller_Admin
 		}
 
 		$categories = Model_Category::find('all');
-		$languages = Model_Language::find('all');
+		$tags = Model_Tag::find('all');
 		foreach ($categories as $key => $value) {
 			$data['categories'][$value->id] = $value->name;
 		}
-		foreach ($languages as $key => $value) {
-			$data['languages'][$value->id] = $value->name;
+		foreach ($tags as $key => $value) {
+			$data['tags'][$value->id] = $value->name;
 		}
 
 		$data['options'] = $data;

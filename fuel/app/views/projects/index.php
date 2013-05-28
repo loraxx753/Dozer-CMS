@@ -1,4 +1,3 @@
-
 	<?php foreach($categories as $category) { ?>
 	<h2><?=$category->name?></h2>
 	<hr />
@@ -9,13 +8,10 @@
 				<p>There are no projects in this category</p>
 			</div>
 		</div>
-
-
-
 			<?php }
 			else { 
 				foreach ($category->projects as $project) { ?>
-		<div class="row" data-id="<?=$project->id?>">
+		<div class="row project-row" data-id="<?=$project->id?>">
 			<div class="span12">
 				<div class="media">
 				  <a class="pull-left" href="/projects/detail/<?=Inflector::friendly_title($project->name,'-',true)?>">
@@ -25,9 +21,9 @@
 				    <h4 class="media-heading"><?=$project->name?></h4>
 					<p><?=$project->overview?></p>
 				  </div>
-					<ul class="nav nav-pills languages">
-				  	<?php foreach ($project->languages as $language) { ?>
-					  <li><a href="#" data-type="<?=$language->name?>"><?=$language->name?></a></li>
+					<ul class="nav nav-pills tags">
+				  	<?php foreach ($project->tags as $tag) { ?>
+					  <li><a href="#" data-type="<?=$tag->name?>"><?=$tag->name?></a></li>
 				  	<?php } ?>
 					</ul>
 				</div>

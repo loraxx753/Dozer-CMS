@@ -10,6 +10,7 @@ class Model_Project extends Model
 		'category',
 		'order',
 		'image',
+		'link',
 		'overview',
 		'created_at',
 		'updated_at',
@@ -26,7 +27,7 @@ class Model_Project extends Model
 		),
 	);
 
-	protected static $_many_many = array('languages');
+	protected static $_many_many = array('tags');
 
 	public static function validate($factory)
 	{

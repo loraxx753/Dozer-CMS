@@ -3,7 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<title><?php echo $title; ?></title>
-	<?php echo Asset::css(array('bootstrap.css', 'styles.css')); ?>
+	<?php echo Asset::css(array('bootstrap.css'), array("class" => "bootstrap")); ?>
+	<?php echo Asset::css(array('styles.css'), array("class" => "custom_css")); ?>
 </head>
 <body>
 	<div class="navbar">

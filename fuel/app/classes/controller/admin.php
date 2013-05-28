@@ -13,7 +13,7 @@ class Controller_Admin extends Controller_Base
 	{
 		$data['categories'] = Model_Category::find('all');
 		$data['projects'] = Model_Project::find()->related("category")->get();
-		$data['languages'] = Model_Language::find()->get();
+		$data['tags'] = Model_Tag::find()->get();
 
 		$this->template->title = 'Admin &raquo; Index';
 		$this->template->content = View::forge('admin/index', $data);
