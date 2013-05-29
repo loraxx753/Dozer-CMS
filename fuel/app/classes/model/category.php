@@ -45,9 +45,8 @@ class Model_Category extends Model
 		$old = umask(0);
 		if(!is_dir(DOCROOT."assets/img/projects/".$this->name))
 		{
-			File::create_dir(DOCROOT."assets/img/projects/", $this->name, 0777);
-			chmod(DOCROOT."assets/img/projects/".$this->name, 777);
-			File::create_dir(DOCROOT."assets/img/projects/".$this->name, "thumbs", 0777);
+			mkdir(DOCROOT."assets/img/projects/".$this->name);
+			mkdir(DOCROOT."assets/img/projects/".$this->name."/thumbs");
 		}
 		umask($old);
 	}

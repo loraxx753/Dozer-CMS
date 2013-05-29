@@ -80,9 +80,8 @@ class Model_Project extends Model
 		$old = umask(0);
 		if(!is_dir(DOCROOT."assets/img/projects/".$category->name))
 		{
-			File::create_dir(DOCROOT."assets/img/projects/", $category->name, 0777);
-			chmod(DOCROOT."assets/img/projects/".$category->name, 777);
-			File::create_dir(DOCROOT."assets/img/projects/".$category->name, "thumbs", 0777);
+			mkdir(DOCROOT."assets/img/projects/".$category->name);
+			mkdir(DOCROOT."assets/img/projects/".$category->name."/thumbs");
 		}
 		umask($old);
 	}
