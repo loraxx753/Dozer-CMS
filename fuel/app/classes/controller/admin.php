@@ -14,6 +14,7 @@ class Controller_Admin extends Controller_Base
 		$data['categories'] = Model_Category::find('all');
 		$data['projects'] = Model_Project::find()->related("category")->get();
 		$data['tags'] = Model_Tag::find()->get();
+		$data['social_media'] = \Config::get("portfolio.profile.social-media");
 
 		$this->template->title = 'Admin &raquo; Index';
 		$this->template->content = View::forge('admin/index', $data, false);
@@ -57,6 +58,29 @@ class Controller_Admin extends Controller_Base
 				else
 				{
 					\Config::set("portfolio.bootswatch", null);
+				}
+				\Config::save("portfolio", "portfolio");
+				break;
+			case "profile":
+				foreach (Input::post("personal_info") as $key => $value) {
+					if($value)
+					{
+						\Config::set("portfolio.profile.".$key, $value);
+					}
+					else 
+					{
+						\Config::set("portfolio.profile.".$key, null);
+					}
+				}
+				foreach (Input::post("social_media") as $key => $value) {
+					if($value)
+					{
+						\Config::set("portfolio.profile.social-media.".$key.".username", $value);
+					}
+					else
+					{
+						\Config::set("portfolio.profile.social-media.".$key.".username", null);
+					}
 				}
 				\Config::save("portfolio", "portfolio");
 				break;

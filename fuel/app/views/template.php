@@ -12,12 +12,15 @@
 	}
 
 	?>
-	<?php echo Asset::css(array('styles.css'), $options); ?>
+	<?php 
+		echo Asset::css(array('styles.css'), $options); 
+		echo Asset::css(array('base.css')); 
+	?>
 </head>
 <body>
 	<div class="navbar">
 		<div class="navbar-inner">
-			<a class="brand" href="/">Kevin Baugh</a>
+			<a class="brand" href="/"><?=\Config::get("portfolio.profile.name")?></a>
 			<ul class="nav">
 				<?php foreach($pages as $page) { ?>
 				<li<?=($currentPage == $page)?" class='active'":''?>><a href="/<?=$page?>"><?=ucwords($page)?></a></li>

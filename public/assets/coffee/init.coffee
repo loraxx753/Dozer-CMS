@@ -7,6 +7,7 @@ Array.prototype.remove = (from, to) ->
 activeTypes = []
 oldHref = ''
 
+# Sort code
 $(".sortable").sortable 
 	connectWith: ".connected", 
 	items: ':not(.disabled)',
@@ -27,6 +28,7 @@ $(".sortable").on "dragstart", ->
 $(".sortable").on "dragover", ->
 	$(@).addClass "test"
 
+# tag filtering code
 $(".tags li a").on "click", (e)->
 	e.preventDefault();
 	tagType = $(@).data('type')
@@ -43,6 +45,8 @@ $(".tags li a").on "click", (e)->
 			if visible is true then $(@).closest(".project-row").slideDown()
 	else
 		$(".tags").closest(".project-row").slideDown()
+
+# Change css code
 
 $(".bootswatch a").click (e)->
 	e.preventDefault()
@@ -66,3 +70,22 @@ $("#save-css").click (e)->
 	folder = $(".bootswatch .active").children("a").data "name"
 	$.post "admin/update/css", {"name" : folder }, (data)->
 		alert "updated";
+
+# Save profile code
+
+$(".update-profile").click (e)->
+	e.preventDefault();
+	inputs = {}
+	inputs.personal_info = {}
+	inputs.social_media = {}
+	$(".personal-info").find("input").each ->
+		if $(@).val() != ''
+			inputs.personal_info[$(@).attr("name")] = $(@).val()
+		else
+			inputs.personal_info[$(@).attr("name")] = null
+	$(".social-media").find("input").each ->
+		if $(@).val() != ''
+			inputs.social_media[$(@).attr("name")] = $(@).val()
+		else
+			inputs.social_media[$(@).attr("name")] = null
+	$.post("admin/update/profile", inputs);

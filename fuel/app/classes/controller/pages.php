@@ -24,8 +24,25 @@ class Controller_Pages extends Controller_Base
 
 	public function action_contact()
 	{
+		$data['social_media'] = '';
+		$social_media = \Config::get("portfolio.profile.social-media");
+		foreach ($social_media as $type => $info) {
+			if($info['username'])
+			{
+				$link = '';
+				if($info['link'])
+				{
+					$link = preg_replace("/{%username}/", $info['username'], $info['link']);
+				}
+				else
+				{
+					$link = $info['username'];
+				}
+				$data['social_media'] .= "<a href='$link'>".Asset::img("social_media/".$type.".png", array("alt" => $info['name']))."</a>";
+			}
+		}
 		$this->template->title = 'Pages &raquo; Contact';
-		$this->template->content = View::forge('pages/contact');
+		$this->template->content = View::forge('pages/contact', $data, false);
 	}
 
 	public function action_login()
