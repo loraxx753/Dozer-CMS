@@ -57,8 +57,7 @@ class Model_Category extends Model
 		$old = umask(0);
 		if(is_dir(DOCROOT."assets/img/projects/".$oldFolderName))
 		{
-			File::rename(DOCROOT."assets/img/projects/".$oldFolderName, DOCROOT."assets/img/projects/".$this->name);
-			chmod(DOCROOT."assets/img/projects/".$this->name, 777);
+			rename(DOCROOT."assets/img/projects/".$oldFolderName, DOCROOT."assets/img/projects/".$this->name);
 		}
 		umask($old);
 	}
