@@ -14,7 +14,8 @@
 	?>
 	<?php 
 		echo Asset::css(array('styles.css'), $options); 
-		echo Asset::css(array('base.css')); 
+		echo Asset::css(array('base.css', 'http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css')); 
+		echo Asset::css('hallo.css'); 
 	?>
 </head>
 <body>
@@ -66,16 +67,48 @@
 	?>
 		var current_css="<?=$current_css?>";
 	</script>
+
 	<?php echo Asset::js(array(
 		'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js',
 		'bootstrap.js', 
 		'html5sortable/jquery.sortable.js', 
-		'init.js',
 		"jquery-markdown/markdown/Markdown.Converter.js",
 		"jquery-markdown/markdown/Markdown.Sanitizer.js",
 		"jquery-markdown/markdown/Markdown.Editor.js",
 		"jquery-markdown/markdown/jquery.markdown.js"
 	)); ?>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+	<script src="http://rangy.googlecode.com/svn/trunk/currentrelease/rangy-core.js"></script>
+	<?php echo Asset::js("hallo.js"); ?>
+	<?php echo \Casset::render_js(); ?>
+	<script>
+	jQuery(".hallo_edit").click(function(e) {
+		e.preventDefault();
+        if($(this).hasClass("btn-primary"))
+        {
+        	$(this).removeClass("btn-primary").addClass("btn-danger").text("Stop Editing");
+        	$(".editable").after('<p><button class="btn btn-success pull-right hallo_save">Save</button></p>');
+
+        }
+        else
+        {
+        	$(this).removeClass("btn-danger").addClass("btn-primary").text("Edit");
+        	$(".hallo_save").parent().remove();
+        }
+        jQuery('.editable').hallo({
+          plugins: {
+            'halloformat': {},
+            'halloblock': {},
+            'hallojustify': {},
+            'hallolists': {},
+            //'hallolink': {},
+            'halloreundo': {}
+          },
+          editable: true
+        });
+
+    });
+    </script>
 
 </body>
 </html>

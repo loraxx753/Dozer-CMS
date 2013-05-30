@@ -1,9 +1,19 @@
 <?php $profile = \Config::get("portfolio.profile"); 
+echo Form::open(array("enctype" => "multipart/form-data", "class"=>"form-horizontal", "action" => "/admin/update/change")); ?>
+<?=($profile['picture']) ? Asset::img($profile['picture'] ,array("class" => "img-circle img-polaroid")) : '' ?>
+<div class="control-group">
+<?=Form::file('picture'); ?>
+</div>
+<div class="control-group">
+		<?php echo Form::submit('change', 'Change', array('class' => 'btn btn-primary change-picture')); ?>	
+</div>
+
+<?php echo Form::close(); 
 echo Form::open(array("enctype" => "multipart/form-data", "class"=>"form-horizontal")); ?>
 	<fieldset class="personal-info">
 		<h2>Personal Information</h2>
 		<div class="control-group">
-			<?php echo Form::label('Name', 'name', array('class'=>'profile-label')); ?>
+			<?php echo Form::label('Site Name', 'name', array('class'=>'profile-label')); ?>
 				<?php echo Form::input('name', Input::post('name', isset($profile['name']) ? $profile['name'] : ''), array('class' => 'span4', 'placeholder'=>'Name')); ?>
 		</div>
 		<div class="control-group">

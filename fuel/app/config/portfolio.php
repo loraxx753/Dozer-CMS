@@ -3,8 +3,9 @@ return array(
 	'bootswatch' => NULL,
 	'profile' => 
 	array(
-		'name' => 'Kevin Baugh',
+		'name' => 'Kevin Baugerteteth',
 		'email' => 'sdfsdf',
+		'picture' => 'profile.jpg',
 		'phone' => 'sdfsdfsdf',
 		'social-media' => 
 		array(

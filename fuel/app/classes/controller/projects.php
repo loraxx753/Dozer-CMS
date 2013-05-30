@@ -5,6 +5,10 @@ class Controller_Projects extends Controller_Base
 
 	public function action_index()
 	{
+		if(\Auth::member(100)) {
+			Casset::js("projects.js");
+			Casset::js("sort.js");
+		}
 		$data = array();
 		$data['categories'] = \Model_Category::find()
 			->order_by("name")

@@ -11,6 +11,8 @@ class Controller_Admin extends Controller_Base
 
 	public function action_index()
 	{
+		\Casset::js("profile.js");
+		\Casset::js("change-css.js");
 		$data['categories'] = Model_Category::find('all');
 		$data['projects'] = Model_Project::find()->related("category")->get();
 		$data['tags'] = Model_Tag::find()->get();
@@ -83,6 +85,22 @@ class Controller_Admin extends Controller_Base
 					}
 				}
 				\Config::save("portfolio", "portfolio");
+				break;
+			case "change":
+				$file = Input::file("picture");
+				$name = explode(".", $file['name']);
+				$extension = array_pop($name);
+				try
+				{
+					\File::copy($file['tmp_name'], DOCROOT."assets/img/profile.".$extension);
+				}
+				catch(Exception $e)
+				{
+					\File::rename(DOCROOT."assets/img/profile.".$extension, DOCROOT."assets/img/profile.".$extension."_old");
+					\File::copy($file['tmp_name'], DOCROOT."assets/img/profile.".$extension);
+					\File::delete(DOCROOT."assets/img/profile.".$extension."_old");
+				}
+				// \Response::redirect("/admin");
 				break;
 		}
 	}

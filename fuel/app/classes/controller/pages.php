@@ -11,8 +11,24 @@ class Controller_Pages extends Controller_Base
 
 	public function action_about()
 	{
+		$page = Model_Page::find()
+			->where("name", "about")
+			->related("page_contents")
+			->get_one();
+		foreach($page->page_contents as $content)
+		{
+			$friendly_title = \Inflector::friendly_title($content->name, "_", true);
+			if(\Auth::member(100))
+			{
+				$data[$friendly_title] = Markdown::parse($content->contents);
+			}
+			else
+			{
+				$data[$friendly_title] = Markdown::parse($content->contents);
+			}
+		}
+
 		$this->template->title = 'Pages &raquo; About';
-		$data['about_me'] = \Content::load("/about/about_me");
 		$this->template->content = View::forge('pages/about', $data, false);
 	}
 	public function action_resume()

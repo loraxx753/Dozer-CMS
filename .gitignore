@@ -18,3 +18,7 @@ build
 !/fuel/app/config/development/db_template.php
 nbproject/
 
+# Casset ignore
+
+/public/assets/cache/*
+!/public/assets/cache/.gitkeep
