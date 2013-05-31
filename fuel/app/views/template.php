@@ -3,7 +3,9 @@
 <head>
 	<meta charset="utf-8">
 	<title><?php echo $title; ?></title>
-	<?php if($current_css = \Config::get("portfolio.bootswatch")) { 
+	<?php 
+		echo Asset::css(array('fontawesome.css', 'hallo.css')); 
+	if($current_css = \Config::get("portfolio.bootswatch")) { 
 		echo Asset::css(array('bootswatch/'.$current_css.'/bootstrap.min.css'), array("class" => "bootstrap")); 	
 		$options = array("class" => "custom_css", "disabled" => true);
 	} else {
@@ -15,7 +17,6 @@
 	<?php 
 		echo Asset::css(array('styles.css'), $options); 
 		echo Asset::css(array('base.css', 'http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css')); 
-		echo Asset::css('hallo.css'); 
 	?>
 </head>
 <body>
@@ -97,14 +98,13 @@
         }
         jQuery('.editable').hallo({
           plugins: {
-            'halloformat': {},
-            'halloblock': {},
-            'hallojustify': {},
-            'hallolists': {},
-            //'hallolink': {},
-            'halloreundo': {}
+		      'halloformat': {},
+		      'halloheadings': {},
+		      'hallolists': {},
+		      // 'halloreundo': {}
           },
-          editable: true
+          editable: true,
+          toolbar: 'halloToolbarFixed'
         });
 
     });

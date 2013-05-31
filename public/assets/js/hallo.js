@@ -115,6 +115,7 @@
         buttonize = function(type, label) {
           var buttonElement;
           buttonElement = jQuery('<span></span>');
+          console.log("icon-list-" + (label.toLowerCase()));
           buttonElement.hallobutton({
             uuid: _this.options.uuid,
             editable: _this.options.editable,
