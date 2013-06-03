@@ -2,6 +2,13 @@
 
 class Controller_Pages extends Controller_Base
 {
+	public function before()
+	{
+		parent::before();
+		if(\Auth::member(100)) { 
+			$this->template->content_edit = true;
+		}
+	}
 
 	public function action_index()
 	{
@@ -20,12 +27,14 @@ class Controller_Pages extends Controller_Base
 			$friendly_title = \Inflector::friendly_title($content->name, "_", true);
 			if(\Auth::member(100))
 			{
-				$data[$friendly_title] = Markdown::parse($content->contents);
+				$parsed = Markdown::parse($content->contents);
 			}
 			else
 			{
-				$data[$friendly_title] = Markdown::parse($content->contents);
+				$parsed = Markdown::parse($content->contents);
 			}
+
+			$data[$friendly_title] = "<div class='editable' id='".\Inflector::friendly_title($content->name)."'>".$parsed."</div>";
 		}
 
 		if (\Auth::member(100)) \Casset::enable_js("hallo");

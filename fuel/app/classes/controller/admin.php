@@ -109,7 +109,32 @@ class Controller_Admin extends Controller_Base
 	}
 
 	public function action_imageupload() {
-		var_dump(Input::file());
-		var_dump(Input::post());
+		if(Input::method() == "POST")
+		{
+			$file = Input::file("userfile");
+			$esplode = explode(".", $file['name']);
+			$extention = array_pop($esplode);
+
+			if(Input::post("caption"))
+			{
+				$safeName = Inflector::friendly_title(Input::post("caption"), "_", true).".".$extention;
+			}
+			else
+			{
+				$safeName = Inflector::friendly_title($esplode[0], "_", true).".".$extention;			
+			}
+
+
+			File::copy($file['tmp_name'], DOCROOT."assets/img/user/".$safeName);
+		}
+
+
+		die();
+	}
+
+	public function post_suggestsions()
+	{
+		$result = array(array('url' => "/assets/img/user/181494_10200638286972823_1949414501_n.jpg", 'tag' => 'all'));
+		echo json_encode($result);
 	}
 }

@@ -26,3 +26,7 @@ nbproject/
 # Projects image file ignore
 /public/assets/img/projects/*
 !/public/assets/img/projects/.gitkeep
+
+# Ignore user images
+/public/assets/img/user/*
+!/public/assets/img/user/.gitkeep

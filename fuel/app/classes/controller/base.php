@@ -12,6 +12,10 @@ class Controller_Base extends Controller_Template
 			"resume",
 			"contact"
 		);
+		if(\Auth::member(100)) { 
+			$this->template->editable = true;
+		}
+
 		$this->template->currentPage = Uri::segment(1);
 	}
 

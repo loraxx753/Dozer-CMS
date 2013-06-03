@@ -56,6 +56,10 @@
 <?php endif; ?>
 		</div>
 		<div class="span12">
+		<?php if(isset($editable)) { ?>
+		<p><button class="btn btn-primary hallo_edit">Edit</button></p>
+		<?php } ?>
+
 <?php echo $content; ?>
 		</div>
 		<footer>
@@ -82,40 +86,57 @@
 	<script src="http://rangy.googlecode.com/svn/trunk/currentrelease/rangy-core.js"></script>
 	<?php echo \Casset::render_js(); ?>
 	<script>
+	function save_text($el) {
+		content = $el.prev();
+		d = "disabled";
+	 	if($el.hasClass(d)) { 
+	 		$el.text("Saved");
+    		$el.removeClass(d).removeAttr(d);
+    		$el.removeClass("btn-info").addClass("btn-success")
+    	}
+		else {
+		 	$el.addClass(d).removeClass("btn-success").addClass("btn-info").attr(d, d);
+    		$el.text("Saving...");
+    		window.setTimeout(function() { save_text($el) }, 1000);
+		}
+	}
 	jQuery(".hallo_edit").click(function(e) {
 		e.preventDefault();
-        if($(this).hasClass("btn-primary"))
-        {
-        	$(this).removeClass("btn-primary").addClass("btn-danger").text("Stop Editing");
-        	$(".editable").after('<p><button class="btn btn-success pull-right hallo_save">Save</button></p>');
-
-        }
-        else
-        {
-        	$(this).removeClass("btn-danger").addClass("btn-primary").text("Edit");
-        	$(".hallo_save").parent().remove();
-        }
-        jQuery('.editable').hallo({
-          plugins: {
-            'halloformat': {},
-            'halloblock': {},
-            'hallojustify': {},
-            'hallolists': {},
-            'hallolink': {},
-            'halloreundo': {},
-            'halloimage': {
-            	upload: function(data) {
-            		console.log("success");
-            	},
-            	uploadUrl: "/admin/imageupload",
-            }
-          },
-          editable: true,
-          toolbar: 'halloToolbarFixed'
-        });
-
-    });
-    </script>
+		if($(this).hasClass("btn-primary"))
+		{
+			$(this).removeClass("btn-primary").addClass("btn-danger").text("Stop Editing");
+			$(".editable").after('<p><button class="btn btn-success pull-right hallo_save" data-loading-text="Saving...">Save</button></p>');
+			jQuery('.editable').hallo({
+				plugins: {
+					'halloformat': {},
+					'halloblock': {},
+					'hallojustify': {},
+					'hallolists': {},
+					'hallolink': {},
+					'halloreundo': {},
+					'halloimage': {
+						upload: function(data) {
+							console.log("success");
+						},
+						uploadUrl: "/admin/imageupload",
+					}
+				},
+				editable: true,
+				toolbar: 'halloToolbarFixed'
+			});
+			$(".hallo_save").on("click", function(e){
+				e.preventDefault();
+				save_text($(this));
+			});
+		}
+		else
+		{
+			$(this).removeClass("btn-danger").addClass("btn-primary").text("Edit");
+			$(".hallo_save").parent().remove();
+			jQuery('.editable').hallo({editable: false});			
+		}
+	});
+	</script>
 
 </body>
 </html>
