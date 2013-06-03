@@ -28,6 +28,8 @@ class Controller_Pages extends Controller_Base
 			}
 		}
 
+		if (\Auth::member(100)) \Casset::enable_js("hallo");
+
 		$this->template->title = 'Pages &raquo; About';
 		$this->template->content = View::forge('pages/about', $data, false);
 	}

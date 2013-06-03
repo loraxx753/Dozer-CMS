@@ -4,7 +4,6 @@
 	<meta charset="utf-8">
 	<title><?php echo $title; ?></title>
 	<?php 
-		echo Asset::css(array('fontawesome.css', 'hallo.css')); 
 	if($current_css = \Config::get("portfolio.bootswatch")) { 
 		echo Asset::css(array('bootswatch/'.$current_css.'/bootstrap.min.css'), array("class" => "bootstrap")); 	
 		$options = array("class" => "custom_css", "disabled" => true);
@@ -13,6 +12,7 @@
 		$options = array("class" => "custom_css");
 	}
 
+		echo Asset::css(array('fontawesome.css', 'hallo.css')); 
 	?>
 	<?php 
 		echo Asset::css(array('styles.css'), $options); 
@@ -80,7 +80,6 @@
 	)); ?>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
 	<script src="http://rangy.googlecode.com/svn/trunk/currentrelease/rangy-core.js"></script>
-	<?php echo Asset::js("hallo.js"); ?>
 	<?php echo \Casset::render_js(); ?>
 	<script>
 	jQuery(".hallo_edit").click(function(e) {
@@ -98,10 +97,18 @@
         }
         jQuery('.editable').hallo({
           plugins: {
-		      'halloformat': {},
-		      'halloheadings': {},
-		      'hallolists': {},
-		      // 'halloreundo': {}
+            'halloformat': {},
+            'halloblock': {},
+            'hallojustify': {},
+            'hallolists': {},
+            'hallolink': {},
+            'halloreundo': {},
+            'halloimage': {
+            	upload: function(data) {
+            		console.log("success");
+            	},
+            	uploadUrl: "/admin/imageupload",
+            }
           },
           editable: true,
           toolbar: 'halloToolbarFixed'

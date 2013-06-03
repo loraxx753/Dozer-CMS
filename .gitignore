@@ -22,3 +22,7 @@ nbproject/
 
 /public/assets/cache/*
 !/public/assets/cache/.gitkeep
+
+# Projects image file ignore
+/public/assets/img/projects/*
+!/public/assets/img/projects/.gitkeep

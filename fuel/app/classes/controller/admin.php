@@ -102,6 +102,14 @@ class Controller_Admin extends Controller_Base
 				}
 				// \Response::redirect("/admin");
 				break;
+			case "imageupload":
+				var_dump(Input::post());
+				break;
 		}
+	}
+
+	public function action_imageupload() {
+		var_dump(Input::file());
+		var_dump(Input::post());
 	}
 }
