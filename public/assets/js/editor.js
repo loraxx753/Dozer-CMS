@@ -61,22 +61,6 @@
     }
   });
 
-  $("#newpage").on("click", function(e) {
-    e.preventDefault();
-    $("body").append("<div id='modal_dump'></div>");
-    return $("#modal_dump").load("/assets/snippets/newpage.html", function() {
-      $('#myModal').modal();
-      return $('#newPageSave').on("click", function(e) {
-        e.preventDefault();
-        return $.post("admin/create/page", {
-          "name": $("#newPageName").val()
-        }, function(data) {
-          return window.location = "/" + data;
-        });
-      });
-    });
-  });
-
   $("#publish_page").on("click", function() {
     var $el, d;
 

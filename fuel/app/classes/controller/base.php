@@ -13,7 +13,8 @@ class Controller_Base extends Controller_Template
 		// 	"contact"
 		// );
 		$pages = Model_Page::find()
-			->where("parent_id", 0);
+			->where("parent_id", 0)
+			->where("name", "!=", "index");
 		if(!\Auth::member(100)) { 
 			$pages->where("published", true);
 		}
@@ -22,10 +23,14 @@ class Controller_Base extends Controller_Template
 		$inline = "var current_css='".((\Config::get("portfolio.bootswatch")) ? \Config::get("portfolio.bootswatch") : "default")."';";
 		$inline .= " var current_page='".Uri::segment(1)."';";
 		\Casset::js_inline($inline);
-		
 		$this->template->currentPage = Uri::segment(1);
-		if(\Auth::member(100) && Uri::segment(1) != "admin") {
-			$this->template->editable = true;
+		if(\Auth::member(100))
+		{ 
+			\Casset::js('newpage.js');
+			if(Uri::segment(1) != "admin")
+			{
+				$this->template->editable = true;
+			}
 		}
 	}
 

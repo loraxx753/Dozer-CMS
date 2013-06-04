@@ -42,17 +42,6 @@ $(".hallo_edit").click (e) ->
 		$(".editable").removeClass("active");
 		jQuery('.editable').hallo
 			editable: false
-$("#newpage").on "click", (e)->
-	e.preventDefault()
-	$("body").append "<div id='modal_dump'></div>"
-	$("#modal_dump").load "/assets/snippets/newpage.html", () ->
-		$('#myModal').modal()
-		$('#newPageSave').on "click", (e) ->
-			e.preventDefault()
-			$.post "admin/create/page",
-				"name" : $("#newPageName").val()
-				(data) ->
-					window.location = "/"+data
 $("#publish_page").on "click", ->
 	d = "disabled"
 	$el = $(@);

@@ -44,6 +44,18 @@ class Install
 	{
 		\Migrate::latest('default', 'app');
 		\Migrate::latest('auth', 'package');
+
+		$name = "index";
+		$page = \Model_Page::forge();
+		$page->name = $name;
+		$page->parent_id = 0;
+		$page->published = 0;
+		$page->clean_name = \Inflector::friendly_title($name, "_", true);
+		$page->save();
+		\Config::set("routes._root_", "/pages/load/".$page->clean_name);
+		\Config::save("routes", "routes");
+		\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($pages as $page) { echo ${$page}; }');
+
 	}
 
 	/**

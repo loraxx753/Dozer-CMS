@@ -62,12 +62,17 @@
 		<?php if(isset($editable)) { ?>
 		<p>
 			<button class="btn btn-success" id="add_content_block">Add Content Block</button>
+			<?php if(!Uri::segment(1)) { ?>
 			<button class="btn btn-success">Add Subpage</button>
+			<?php } ?>
 			<button class="btn btn-primary hallo_edit">Edit</button>
+			<?php if(!Uri::segment(1)) { ?>
+
 			<?php if(isset($published)) { ?>
 			<button class="btn btn-warning" id="publish_page">Un-Publish</button>
 			<?php } else { ?>
 			<button class="btn btn-primary" id="publish_page">Publish Page</button>
+			<?php } ?>
 			<?php } ?>
 			<button class="btn btn-danger pull-right">Delete Page</button>
 		</p>

@@ -10,12 +10,12 @@ class Controller_Pages extends Controller_Base
 		}
 	}
 
-	public function action_index()
-	{
-		if (\Auth::member(100)) \Casset::enable_js("editor");
-		$this->template->title = 'Pages &raquo; Index';
-		$this->template->content = View::forge('pages/index');
-	}
+	// public function action_index()
+	// {
+	// 	if (\Auth::member(100)) \Casset::enable_js("editor");
+	// 	$this->template->title = 'Pages &raquo; Index';
+	// 	$this->template->content = View::forge('pages/index');
+	// }
 
 	public function action_load($clean_name) {
 		$data = array();
@@ -39,7 +39,7 @@ class Controller_Pages extends Controller_Base
 		{
 			$this->template->published = true;
 		}
-		$this->template->title = $page->name;
+		$this->template->title = ($page->name == "index") ? "Kevin Baugh" : $page->name;
 		$this->template->content = View::forge('pages/load/'.$clean_name, $data, false);
 	}
 
