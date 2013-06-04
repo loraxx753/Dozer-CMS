@@ -3,3 +3,7 @@
 	display: inline-block;
 	font-weight: bold;
 }
+
+.editable.active {
+	border: 1px dashed black;
+}

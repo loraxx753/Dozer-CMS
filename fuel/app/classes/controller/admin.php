@@ -22,91 +22,6 @@ class Controller_Admin extends Controller_Base
 		$this->template->content = View::forge('admin/index', $data, false);
 	}
 
-	public function post_update($type)
-	{
-		$this->template = null;
-		switch($type)
-		{
-			case "projects":
-				$movedProject = Model_Project::find()->where("id", Input::post("id"))->get_one();
-				$projects = Model_Project::find()
-					->where("category", Input::post("category"))
-					->where("order", ">", Input::post("newIndex"))
-					->get();
-				
-
-				foreach($projects as $project)
-				{
-					if($project->order == (int)Input::post("newIndex")+1)
-						$project->order--;
-					else
-						$project->order++;
-					$project->save();
-				}
-				$oldFolderId = $movedProject->category;
-
-				$movedProject->category = Input::post("category");
-				$movedProject->order = (int)Input::post("newIndex")+1;
-				$movedProject->save();
-
-				$movedProject->move_image_assets($oldFolderId, $movedProject);
-				break;
-			case "css":
-				$name = Input::post("name");
-				if($name != "reset")
-				{
-					\Config::set("portfolio.bootswatch", $name);
-				}
-				else
-				{
-					\Config::set("portfolio.bootswatch", null);
-				}
-				\Config::save("portfolio", "portfolio");
-				break;
-			case "profile":
-				foreach (Input::post("personal_info") as $key => $value) {
-					if($value)
-					{
-						\Config::set("portfolio.profile.".$key, $value);
-					}
-					else 
-					{
-						\Config::set("portfolio.profile.".$key, null);
-					}
-				}
-				foreach (Input::post("social_media") as $key => $value) {
-					if($value)
-					{
-						\Config::set("portfolio.profile.social-media.".$key.".username", $value);
-					}
-					else
-					{
-						\Config::set("portfolio.profile.social-media.".$key.".username", null);
-					}
-				}
-				\Config::save("portfolio", "portfolio");
-				break;
-			case "change":
-				$file = Input::file("picture");
-				$name = explode(".", $file['name']);
-				$extension = array_pop($name);
-				try
-				{
-					\File::copy($file['tmp_name'], DOCROOT."assets/img/profile.".$extension);
-				}
-				catch(Exception $e)
-				{
-					\File::rename(DOCROOT."assets/img/profile.".$extension, DOCROOT."assets/img/profile.".$extension."_old");
-					\File::copy($file['tmp_name'], DOCROOT."assets/img/profile.".$extension);
-					\File::delete(DOCROOT."assets/img/profile.".$extension."_old");
-				}
-				// \Response::redirect("/admin");
-				break;
-			case "imageupload":
-				var_dump(Input::post());
-				break;
-		}
-	}
 
 	public function action_imageupload() {
 		if(Input::method() == "POST")
@@ -128,6 +43,25 @@ class Controller_Admin extends Controller_Base
 			File::copy($file['tmp_name'], DOCROOT."assets/img/user/".$safeName);
 		}
 
+
+		die();
+	}
+
+	public function post_create($type) {
+		switch($type) {
+			case "page": 
+				$name = Input::post("name");
+				$page = Model_Page::forge();
+				$page->name = $name;
+				$page->parent_id = 0;
+				$page->published = 0;
+				$page->clean_name = \Inflector::friendly_title($name, "_", true);
+				$page->save();
+		}
+		\Config::set("routes.".$page->clean_name, "/pages/load/".$page->clean_name);
+		\Config::save("routes", "routes");
+		\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($pages as $page) { echo ${$page}; }');
+		echo $page->clean_name;
 
 		die();
 	}

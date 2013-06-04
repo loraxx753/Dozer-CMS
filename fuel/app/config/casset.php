@@ -246,8 +246,10 @@ return array(
 	 */
 	'groups' => array(
 		'js' => array(
-			'hallo' => array(
+			'editor' => array(
 				'files' => array(
+					// The editor file
+					'editor.js',
 					// The main hallo file
 					'hallo/hallo.js',
 					// The toolbar group
@@ -280,7 +282,7 @@ return array(
 					'hallo/plugins/image_insert_edit.js',
 				),
 				'enabled' => false,
-				'combine' => true,
+				'combine' => false,
 				'min' => true,
 			),
 		),

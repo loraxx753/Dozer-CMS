@@ -30,3 +30,7 @@ nbproject/
 # Ignore user images
 /public/assets/img/user/*
 !/public/assets/img/user/.gitkeep
+
+#Ignore the pages 
+/fuel/app/views/pages/load/*
+!/fuel/app/views/pages/load/.gitkeep

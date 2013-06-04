@@ -12,8 +12,35 @@ class Controller_Pages extends Controller_Base
 
 	public function action_index()
 	{
+		if (\Auth::member(100)) \Casset::enable_js("editor");
 		$this->template->title = 'Pages &raquo; Index';
 		$this->template->content = View::forge('pages/index');
+	}
+
+	public function action_load($clean_name) {
+		$data = array();
+		$page = Model_Page::find()
+			->where("clean_name", $clean_name)
+			->related("page_contents")
+			->get_one();
+		\Casset::js_inline("var page_is_published=".(($page->published) ? "true" : "false").";");
+		$data['pages'] = array();
+		foreach($page->page_contents as $content)
+		{
+			$friendly_title = \Inflector::friendly_title($content->name, "_", true);
+
+			$data[$friendly_title] = "<div class='editable' id='".\Inflector::friendly_title($content->name)."_".$content->id."'>".$content->contents."</div>";
+			$data['pages'][] = $friendly_title;
+		}
+
+		if (\Auth::member(100)) \Casset::enable_js("editor");
+
+		if($page->published)
+		{
+			$this->template->published = true;
+		}
+		$this->template->title = $page->name;
+		$this->template->content = View::forge('pages/load/'.$clean_name, $data, false);
 	}
 
 	public function action_about()
@@ -25,19 +52,11 @@ class Controller_Pages extends Controller_Base
 		foreach($page->page_contents as $content)
 		{
 			$friendly_title = \Inflector::friendly_title($content->name, "_", true);
-			if(\Auth::member(100))
-			{
-				$parsed = Markdown::parse($content->contents);
-			}
-			else
-			{
-				$parsed = Markdown::parse($content->contents);
-			}
 
-			$data[$friendly_title] = "<div class='editable' id='".\Inflector::friendly_title($content->name)."'>".$parsed."</div>";
+			$data[$friendly_title] = "<div class='editable' id='".\Inflector::friendly_title($content->name)."_".$content->id."'>".$content->contents."</div>";
 		}
 
-		if (\Auth::member(100)) \Casset::enable_js("hallo");
+		if (\Auth::member(100)) \Casset::enable_js("editor");
 
 		$this->template->title = 'Pages &raquo; About';
 		$this->template->content = View::forge('pages/about', $data, false);

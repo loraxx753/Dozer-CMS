@@ -6,6 +6,9 @@ class Model_Page extends \Orm\Model
 	protected static $_properties = array(
 		'id',
 		'name',
+		'clean_name',
+		'parent_id',
+		'published',
 		'created_at',
 		'updated_at',
 	);

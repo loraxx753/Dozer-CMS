@@ -25,7 +25,10 @@
 			<a class="brand" href="/"><?=\Config::get("portfolio.profile.name")?></a>
 			<ul class="nav">
 				<?php foreach($pages as $page) { ?>
-				<li<?=($currentPage == $page)?" class='active'":''?>><a href="/<?=$page?>"><?=ucwords($page)?></a></li>
+				<li<?=($currentPage == $page->name)?" class='active'":''?>><a href="/<?=$page->clean_name?>"><?=ucwords($page->name)?></a></li>
+				<?php } ?>
+				<?php if(\Auth::member(100)) { ?>
+				<li><a href="#" id="newpage">New Page+</a></li>
 				<?php } ?>
 			</ul>
 			<?php if(\Auth::member(100)) { ?>
@@ -57,7 +60,17 @@
 		</div>
 		<div class="span12">
 		<?php if(isset($editable)) { ?>
-		<p><button class="btn btn-primary hallo_edit">Edit</button></p>
+		<p>
+			<button class="btn btn-success">Add Content Block</button>
+			<button class="btn btn-success">Add Subpage</button>
+			<button class="btn btn-primary hallo_edit">Edit</button>
+			<?php if(isset($published)) { ?>
+			<button class="btn btn-warning" id="publish_page">Un-Publish</button>
+			<?php } else { ?>
+			<button class="btn btn-primary" id="publish_page">Publish Page</button>
+			<?php } ?>
+			<button class="btn btn-danger pull-right">Delete Page</button>
+		</p>
 		<?php } ?>
 
 <?php echo $content; ?>
@@ -66,12 +79,7 @@
 			<p class="muted">Copyright &copy; 2013 Kevin Baugh</p>
 		</footer>
 	</div>
-	<script>
-	<?php
-		$current_css = (\Config::get("portfolio.bootswatch")) ? \Config::get("portfolio.bootswatch") : "default";
-	?>
-		var current_css="<?=$current_css?>";
-	</script>
+	<?=Casset::render_js_inline();?>
 
 	<?php echo Asset::js(array(
 		'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js',
@@ -85,58 +93,5 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
 	<script src="http://rangy.googlecode.com/svn/trunk/currentrelease/rangy-core.js"></script>
 	<?php echo \Casset::render_js(); ?>
-	<script>
-	function save_text($el) {
-		content = $el.prev();
-		d = "disabled";
-	 	if($el.hasClass(d)) { 
-	 		$el.text("Saved");
-    		$el.removeClass(d).removeAttr(d);
-    		$el.removeClass("btn-info").addClass("btn-success")
-    	}
-		else {
-		 	$el.addClass(d).removeClass("btn-success").addClass("btn-info").attr(d, d);
-    		$el.text("Saving...");
-    		window.setTimeout(function() { save_text($el) }, 1000);
-		}
-	}
-	jQuery(".hallo_edit").click(function(e) {
-		e.preventDefault();
-		if($(this).hasClass("btn-primary"))
-		{
-			$(this).removeClass("btn-primary").addClass("btn-danger").text("Stop Editing");
-			$(".editable").after('<p><button class="btn btn-success pull-right hallo_save" data-loading-text="Saving...">Save</button></p>');
-			jQuery('.editable').hallo({
-				plugins: {
-					'halloformat': {},
-					'halloblock': {},
-					'hallojustify': {},
-					'hallolists': {},
-					'hallolink': {},
-					'halloreundo': {},
-					'halloimage': {
-						upload: function(data) {
-							console.log("success");
-						},
-						uploadUrl: "/admin/imageupload",
-					}
-				},
-				editable: true,
-				toolbar: 'halloToolbarFixed'
-			});
-			$(".hallo_save").on("click", function(e){
-				e.preventDefault();
-				save_text($(this));
-			});
-		}
-		else
-		{
-			$(this).removeClass("btn-danger").addClass("btn-primary").text("Edit");
-			$(".hallo_save").parent().remove();
-			jQuery('.editable').hallo({editable: false});			
-		}
-	});
-	</script>
-
 </body>
 </html>
