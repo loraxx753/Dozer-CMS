@@ -33,7 +33,7 @@ $(".hallo_edit").click (e) ->
 					uploadUrl: "/admin/imageupload"
 			editable: true
 			toolbar: 'halloToolbarFixed'
-		$(".hallo_save").on "click", (e) ->
+		$("#page_content").on "click", ".hallo_save", "click", (e) ->
 			e.preventDefault
 			save_text $(this)
 	else
@@ -79,3 +79,15 @@ $("#publish_page").on "click", ->
 				$el.removeClass(d).removeAttr(d)
 				$el.removeClass("btn-primary").addClass("btn-warning")
 				window.page_is_published = true
+$("#add_content_block").on "click", ->
+	$("body").append "<div id='modal_dump'></div>"
+	$("#modal_dump").load "/assets/snippets/contentblock.html", () ->
+		$('#myModal').modal()
+		$('#contentBlockSave').on "click", (e) ->
+			e.preventDefault()
+			$.post "admin/create/block",
+				"name" : $("#contentBlockName").val()
+				"page" : window.current_page
+				(data) ->
+					$("#page_content").append(data);
+

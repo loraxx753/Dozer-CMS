@@ -61,7 +61,7 @@
 		<div class="span12">
 		<?php if(isset($editable)) { ?>
 		<p>
-			<button class="btn btn-success">Add Content Block</button>
+			<button class="btn btn-success" id="add_content_block">Add Content Block</button>
 			<button class="btn btn-success">Add Subpage</button>
 			<button class="btn btn-primary hallo_edit">Edit</button>
 			<?php if(isset($published)) { ?>
@@ -72,8 +72,9 @@
 			<button class="btn btn-danger pull-right">Delete Page</button>
 		</p>
 		<?php } ?>
-
+<div id="page_content">
 <?php echo $content; ?>
+</div>
 		</div>
 		<footer>
 			<p class="muted">Copyright &copy; 2013 Kevin Baugh</p>

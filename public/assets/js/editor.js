@@ -47,7 +47,7 @@
         editable: true,
         toolbar: 'halloToolbarFixed'
       });
-      return $(".hallo_save").on("click", function(e) {
+      return $("#page_content").on("click", ".hallo_save", "click", function(e) {
         e.preventDefault;
         return save_text($(this));
       });
@@ -108,6 +108,22 @@
         return window.page_is_published = true;
       });
     }
+  });
+
+  $("#add_content_block").on("click", function() {
+    $("body").append("<div id='modal_dump'></div>");
+    return $("#modal_dump").load("/assets/snippets/contentblock.html", function() {
+      $('#myModal').modal();
+      return $('#contentBlockSave').on("click", function(e) {
+        e.preventDefault();
+        return $.post("admin/create/block", {
+          "name": $("#contentBlockName").val(),
+          "page": window.current_page
+        }, function(data) {
+          return $("#page_content").append(data);
+        });
+      });
+    });
   });
 
 }).call(this);

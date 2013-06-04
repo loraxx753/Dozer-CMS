@@ -57,11 +57,23 @@ class Controller_Admin extends Controller_Base
 				$page->published = 0;
 				$page->clean_name = \Inflector::friendly_title($name, "_", true);
 				$page->save();
+				\Config::set("routes.".$page->clean_name, "/pages/load/".$page->clean_name);
+				\Config::save("routes", "routes");
+				\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($pages as $page) { echo ${$page}; }');
+				echo $page->clean_name;
+				break;
+			case "block":
+				$name = Input::post("name");
+				$pageName = Input::post("page");
+				$page = Model_Page::find()->where("clean_name", $pageName)->get_one();
+				$block = Model_Page_Content::forge();
+				$block->page_id = $page->id;
+				$block->name = $name;
+				$block->contents = "<p>".$block->name."</p>";
+				$block->save();
+				echo "<div class='editable' id='".\Inflector::friendly_title($block->name)."_".$block->id."'>".$block->contents."</div>";
+				break;
 		}
-		\Config::set("routes.".$page->clean_name, "/pages/load/".$page->clean_name);
-		\Config::save("routes", "routes");
-		\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($pages as $page) { echo ${$page}; }');
-		echo $page->clean_name;
 
 		die();
 	}
