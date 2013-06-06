@@ -42,14 +42,6 @@ class Install
 	 */
 	public static function run()
 	{
-		self::success("Getting submodules...");
-		exec("git submodule init");
-		exec("git submodule update");
-
-		self::success("Updating composer...");
-		exec("php composer.phar self-update");
-		exec("php composer.phar update");
-
 
 		$db_host = \Cli::prompt("What's your database's host (usually localhost)");
 		$db_name = \Cli::prompt("What about your database's name?");
@@ -85,15 +77,15 @@ class Install
 		\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($pages as $page) { echo ${$page}; }');
 
 		\Cli::write("Let's add an aministrator! This is going to be you, so we're going to need some information.");
-		$admin_username = \Cli::prompt("First off, choose a username:");
-		$admin_email = \Cli::prompt("Now give me your email address:");
-		$admin_password = \Cli::prompt("Finally, make a password:");
-		$admin_password2 = \Cli::prompt("Type it again to be sure:");
+		$admin_username = \Cli::prompt("First off, choose a username");
+		$admin_email = \Cli::prompt("Now give me your email address");
+		$admin_password = \Cli::prompt("Finally, make a password");
+		$admin_password2 = \Cli::prompt("Type it again to be sure");
 		while($admin_password != $admin_password2)
 		{
 			self::error("Whoops! Your passwords didn't match. Try again.");
-			$admin_password = \Cli::prompt("Finally, make a password:");
-			$admin_password2 = \Cli::prompt("Type it again to be sure:");
+			$admin_password = \Cli::prompt("Finally, make a password");
+			$admin_password2 = \Cli::prompt("Type it again to be sure");
 		}
 		\Auth::create_user(
 		    $admin_username,
