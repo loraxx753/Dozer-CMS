@@ -50,11 +50,11 @@ defined('FUEL_START_MEM') or define('FUEL_START_MEM', memory_get_usage());
 
 if($_SERVER['argv'][1] == 'dozer')
 {
-	print "Getting submodules...\n";
+	print "\033[0;32mGetting submodules...\n\033[0m";
 	exec("git submodule init");
 	exec("git submodule update");
 
-	print "Updating composer...\n";
+	print "\033[0;32mUpdating composer...\n\033[0m";
 	exec("php composer.phar self-update");
 	exec("php composer.phar update");
 }
@@ -66,6 +66,7 @@ if($_SERVER['argv'][1] == 'dozer')
 {
 	include APPPATH.'tasks/install.php';
 	Fuel\Tasks\Install::run();
+	die();
 }
 Package::load('oil');
 
