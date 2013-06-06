@@ -42,6 +42,15 @@ class Install
 	 */
 	public static function run()
 	{
+		self::success("Getting submodules...");
+		exec("git submodule init");
+		exec("git submodule update");
+
+		self::success("Updating composer...");
+		exec("php composer.phar self-update");
+		exec("php composer.phar update");
+
+
 		$db_host = \Cli::prompt("What's your database's host (usually localhost)");
 		$db_name = \Cli::prompt("What about your database's name?");
 		$db_username = \Cli::prompt("Your username for the database?");
