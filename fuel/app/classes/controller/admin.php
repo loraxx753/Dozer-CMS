@@ -13,9 +13,6 @@ class Controller_Admin extends Controller_Base
 	{
 		\Casset::js("profile.js");
 		\Casset::js("change-css.js");
-		$data['categories'] = Model_Category::find('all');
-		$data['projects'] = Model_Project::find()->related("category")->get();
-		$data['tags'] = Model_Tag::find()->get();
 		$data['social_media'] = \Config::get("portfolio.profile.social-media");
 
 		$this->template->title = 'Admin &raquo; Index';
