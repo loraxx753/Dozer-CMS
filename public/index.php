@@ -33,14 +33,8 @@ if(isset($_POST['action']))
 {
 	if($_POST['action'] == "git_updates")
 	{
-		print "\033[0;32mGetting submodules...\n\033[0m";
-		exec("git submodule init");
-		exec("git submodule update");
-
-		print "\033[0;32mUpdating composer...\n\033[0m";
-		exec("php composer.phar self-update");
-		exec("php composer.phar update");
-
+		var_dump(system("php composer.phar self-update", $return));
+		var_dump(system("php composer.phar update", $return));
 	}
 	else
 	{
