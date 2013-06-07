@@ -18,7 +18,17 @@ class Controller_Base extends Controller_Template
 				->related("sub_pages");
 		if(!\Auth::member(100)) { 
 			$pages->where("published", "1");
-			$pages = $pages->get();
+			try
+			{
+				$pages = $pages->get();
+			}
+			catch(Database_Exception $e)
+			{
+				\Config::set("routes._root_", "dozer/install");
+				\Config::save("routes", "routes");
+				\Response::redirect("/");
+
+			}
 			foreach($pages as $page)
 			{
 				foreach($page->sub_pages as $index => $subpage)

@@ -17,19 +17,6 @@
 <script src="/assets/js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function() {
-	$("button#git_update").on("click", function(e) {
-		e.preventDefault();
-		$("#progressModal .text").text("Setting up everything. This might take a bit...");
-		$('#progressModal').modal({
-			'backdrop' : 'static',
-			'keyboard' : 'false'
-		});
-		$('#progressModal').modal('show');
-		$.post("index.php", {"action": "git_updates"}, function(data) {
-			$("#progressModal").modal('hide');
-			$("a[href=#collapseTwo]").click();
-		});
-	});
 	$("#database_setup").on("click", function(e) {
 		e.preventDefault();
 		var options = {
@@ -45,7 +32,7 @@ $(document).ready(function() {
 			'keyboard' : 'false'
 		});
 		$('#progressModal').modal('show');
-		$.post("index.php", options, function(data) {
+		$.post("/", options, function(data) {
 			$("#progressModal").modal('hide');
 			$("a[href=#collapseThree]").click();
 		});
@@ -65,7 +52,7 @@ $(document).ready(function() {
 			'keyboard' : 'false'
 		});
 		$('#progressModal').modal('show');
-		$.post("index.php", options, function(data) {
+		$.post("/", options, function(data) {
 			$("#progressModal").modal('hide');
 			window.location="/";
 		});
@@ -85,19 +72,6 @@ $(document).ready(function() {
 		<h1>Welcome to Dozer</h1>
 
 		<div class="accordion" id="accordion1">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
-						Welcome to Dozer
-					</a>
-				</div>
-				<div id="collapseOne" class="accordion-body collapse in">
-					<div class="accordion-inner">
-						<p>To make things easier to initially upload, we've only uploaded "some" of the files you need. To get the rest of the nessicary files, click that big button below.</p>
-						<button class="btn btn-big btn-primary" id="git_update">Start it up!</button>
-					</div> <!-- end .accordion-inner -->
-				</div> <!-- end #collapseOne -->
-			</div><!-- end .accordion-group -->
 			<div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo">
