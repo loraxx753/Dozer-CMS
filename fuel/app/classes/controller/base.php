@@ -12,18 +12,43 @@ class Controller_Base extends Controller_Template
 		// 	"resume",
 		// 	"contact"
 		// );
-		$pages = Model_Page::find()
-			->where("parent_id", 0)
-			->where("name", "!=", "index");
+		$pages = Model_Page::query()
+			->where("parent_id", "0")
+			->where("name", "!=", "index")
+				->related("sub_pages");
 		if(!\Auth::member(100)) { 
-			$pages->where("published", true);
+			$pages->where("published", "1");
+			$pages = $pages->get();
+			foreach($pages as $page)
+			{
+				foreach($page->sub_pages as $index => $subpage)
+				{
+					if($subpage->published == 0)
+					{
+						unset($page->sub_pages[$index]);
+					}
+				}
+			}
+		}
+		else
+		{
+			$pages = $pages->get();
 		}
 
-		$this->template->pages = $pages->get();
+		$this->template->pages = $pages;
 		$inline = "var current_css='".((\Config::get("portfolio.bootswatch")) ? \Config::get("portfolio.bootswatch") : "default")."';";
-		$inline .= " var current_page='".Uri::segment(1)."';";
+		if(count(Uri::segments()))
+		{
+			$uri = Uri::segments();			
+		}
+		else
+		{
+			$uri = array();
+		}
+		$curPage = array_pop($uri);
+		$inline .= " var current_page='".$curPage."';";
 		\Casset::js_inline($inline);
-		$this->template->currentPage = Uri::segment(1);
+		$this->template->currentPage = $curPage;
 		if(\Auth::member(100))
 		{ 
 			\Casset::js('newpage.js');

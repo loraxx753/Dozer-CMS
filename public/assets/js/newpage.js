@@ -7,7 +7,7 @@
       $('#myModal').modal();
       return $('#newPageSave').on("click", function(e) {
         e.preventDefault();
-        return $.post("admin/create/page", {
+        return $.post("/admin/create/page", {
           "name": $("#newPageName").val()
         }, function(data) {
           return window.location = "/" + data;

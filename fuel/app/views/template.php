@@ -24,8 +24,17 @@
 		<div class="navbar-inner">
 			<a class="brand" href="/"><?=\Config::get("portfolio.profile.name")?></a>
 			<ul class="nav">
-				<?php foreach($pages as $page) { ?>
-				<li<?=($currentPage == $page->name)?" class='active'":''?>><a href="/<?=$page->clean_name?>"><?=ucwords($page->name)?></a></li>
+				<?php 
+				foreach($pages as $page) { ?>
+				<li<?=($currentPage == $page->name)?" class='active'":''?>><a href="/<?=$page->clean_name?>"><?=ucwords($page->name)?><?=(count($page->sub_pages)) ? '<b class="caret"></b>' : ''?></a>
+					<?php if(count($page->sub_pages)) { ?>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+					  <?php foreach($page->sub_pages as $subpage) { ?>
+					  <li><a tabindex="-1" href="/<?=$page->clean_name."/".$subpage->clean_name?>"><?=$subpage->name?></a></li>
+					  <?php } ?>
+					</ul>
+					<?php } ?>
+			</li>
 				<?php } ?>
 				<?php if(\Auth::member(100)) { ?>
 				<li><a href="#" id="newpage">New Page+</a></li>
@@ -62,12 +71,11 @@
 		<?php if(isset($editable)) { ?>
 		<p>
 			<button class="btn btn-success" id="add_content_block">Add Content Block</button>
-			<?php if(!Uri::segment(1)) { ?>
-			<button class="btn btn-success">Add Subpage</button>
+			<?php if(count(Uri::segments())) { ?>
+			<button class="btn btn-success" id="add_sub_page">Add Subpage</button>
 			<?php } ?>
 			<button class="btn btn-primary hallo_edit">Edit</button>
-			<?php if(!Uri::segment(1)) { ?>
-
+			<?php if(count(Uri::segments())) { ?>
 			<?php if(isset($published)) { ?>
 			<button class="btn btn-warning" id="publish_page">Un-Publish</button>
 			<?php } else { ?>

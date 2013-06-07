@@ -18,29 +18,39 @@ class Controller_Pages extends Controller_Base
 	// }
 
 	public function action_load($clean_name) {
+		$currentPage = Model_Page::query();
+		if($this->param("subpage")) 
+		{
+			$parent_page = $clean_name;
+			$clean_name = $this->param('subpage');
+			$parent = Model_Page::query()->where("clean_name", $parent_page)->get_one();
+			$currentPage->where("parent_id", $parent->id);
+		}
 		$data = array();
-		$page = Model_Page::find()
+		$currentPage
 			->where("clean_name", $clean_name)
-			->related("page_contents")
-			->get_one();
-		\Casset::js_inline("var page_is_published=".(($page->published) ? "true" : "false").";");
-		$data['pages'] = array();
-		foreach($page->page_contents as $content)
+			->related("page_contents");
+		$currentPage = $currentPage->get_one();
+		\Casset::js_inline("var page_is_published=".(($currentPage->published) ? "true" : "false").";");
+		$data['blocks'] = array();
+		foreach($currentPage->page_contents as $content)
 		{
 			$friendly_title = \Inflector::friendly_title($content->name, "_", true);
 
 			$data[$friendly_title] = "<div class='editable' id='".\Inflector::friendly_title($content->name)."_".$content->id."'>".$content->contents."</div>";
-			$data['pages'][] = $friendly_title;
+			$data['blocks'][] = $friendly_title;
 		}
 
 		if (\Auth::member(100)) \Casset::enable_js("editor");
 
-		if($page->published)
+		if($currentPage->published == "1")
 		{
 			$this->template->published = true;
 		}
-		$this->template->title = ($page->name == "index") ? "Kevin Baugh" : $page->name;
-		$this->template->content = View::forge('pages/load/'.$clean_name, $data, false);
+		$this->template->title = ($currentPage->name == "index") ? "Kevin Baugh" : $currentPage->name;
+		$segments = Uri::segments();
+		$segments = (count($segments)) ? $segments : array('index');
+		$this->template->content = View::forge('pages/load/'.implode("/", $segments), $data, false);
 	}
 
 	public function action_about()

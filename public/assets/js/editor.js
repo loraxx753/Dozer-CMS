@@ -69,7 +69,7 @@
     if (page_is_published === true) {
       $el.addClass(d).attr(d, d);
       $el.text("Un-Publishing...");
-      return $.post("admin/update/publish", {
+      return $.post("/admin/update/publish", {
         clean_name: current_page,
         publish: 0
       }, function(data) {
@@ -81,7 +81,7 @@
     } else {
       $el.addClass(d).attr(d, d);
       $el.text("Publishing...");
-      return $.post("admin/update/publish", {
+      return $.post("/admin/update/publish", {
         clean_name: current_page,
         publish: 1
       }, function(data) {
@@ -100,11 +100,27 @@
       $('#myModal').modal();
       return $('#contentBlockSave').on("click", function(e) {
         e.preventDefault();
-        return $.post("admin/create/block", {
+        return $.post("/admin/create/block", {
           "name": $("#contentBlockName").val(),
           "page": window.current_page
         }, function(data) {
           return $("#page_content").append(data);
+        });
+      });
+    });
+  });
+
+  $("#add_sub_page").on("click", function() {
+    $("body").append("<div id='modal_dump'></div>");
+    return $("#modal_dump").load("/assets/snippets/subpage.html", function() {
+      $('#myModal').modal();
+      return $('#newSubPageSave').on("click", function(e) {
+        e.preventDefault();
+        return $.post("/admin/create/subpage", {
+          "name": $("#newSubPageName").val(),
+          "parent": window.current_page
+        }, function(data) {
+          return window.location = "/" + data;
         });
       });
     });

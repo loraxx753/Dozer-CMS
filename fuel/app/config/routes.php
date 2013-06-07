@@ -7,4 +7,7 @@ return array(
 	'logout' => '/pages/logout',
 	'about' => '/pages/load/about',
 	'resume' => '/pages/load/resume',
+	'about/(:subpage)' => '/pages/load/about',
+	'contact' => '/pages/load/contact',
+	'contact/more_sub' => '/pages/load/contact/more_sub',
 );

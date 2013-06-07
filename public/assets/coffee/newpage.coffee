@@ -5,7 +5,7 @@ $("#newpage").on "click", (e)->
 		$('#myModal').modal()
 		$('#newPageSave').on "click", (e) ->
 			e.preventDefault()
-			$.post "admin/create/page",
+			$.post "/admin/create/page",
 				"name" : $("#newPageName").val()
 				(data) ->
 					window.location = "/"+data

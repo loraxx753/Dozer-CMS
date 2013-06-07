@@ -7,3 +7,20 @@
 .editable.active {
 	border: 1px dashed black;
 }
+
+.nav li:hover ul.dropdown-menu {
+	display: block;
+} 
+
+.navbar .nav > li > .dropdown-menu:after, .navbar .nav > li > .dropdown-menu:before {
+	display: none;
+}
+
+.caret {
+	margin: 9px  0 0 7px;
+}
+
+.dropdown-menu {
+	left: auto;
+	margin-top: -1px;
+}

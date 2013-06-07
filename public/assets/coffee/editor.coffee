@@ -48,7 +48,7 @@ $("#publish_page").on "click", ->
 	if page_is_published == true
 		$el.addClass(d).attr(d, d);
 		$el.text("Un-Publishing...")
-		$.post "admin/update/publish", 
+		$.post "/admin/update/publish", 
 			clean_name: current_page
 			publish: 0
 			(data) ->
@@ -59,7 +59,7 @@ $("#publish_page").on "click", ->
 	else
 		$el.addClass(d).attr(d, d);
 		$el.text("Publishing...")
-		$.post "admin/update/publish", 
+		$.post "/admin/update/publish", 
 			clean_name: current_page
 			publish: 1
 			(data) ->
@@ -74,9 +74,21 @@ $("#add_content_block").on "click", ->
 		$('#myModal').modal()
 		$('#contentBlockSave').on "click", (e) ->
 			e.preventDefault()
-			$.post "admin/create/block",
+			$.post "/admin/create/block",
 				"name" : $("#contentBlockName").val()
 				"page" : window.current_page
 				(data) ->
 					$("#page_content").append(data);
+$("#add_sub_page").on "click", ->
+	$("body").append "<div id='modal_dump'></div>"
+	$("#modal_dump").load "/assets/snippets/subpage.html", () ->
+		$('#myModal').modal()
+		$('#newSubPageSave').on "click", (e) ->
+			e.preventDefault()
+			$.post "/admin/create/subpage",
+				"name" : $("#newSubPageName").val()
+				"parent" : window.current_page
+				(data) ->
+					window.location = "/"+data
+
 

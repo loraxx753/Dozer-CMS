@@ -25,5 +25,14 @@ class Model_Page extends \Orm\Model
 	);
 	protected static $_table_name = 'pages';
 
-	protected static $_has_many = array('page_contents');
+	protected static $_has_many = array(
+		'page_contents',
+		'sub_pages' => array(
+			'key_from' => 'id',
+			'model_to' => 'Model_Page',
+			'key_to' => 'parent_id',
+			'cascade_save' => false,
+			'cascade_delete' => false,
+		)
+	);
 }
