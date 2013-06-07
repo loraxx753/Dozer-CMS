@@ -40,15 +40,19 @@ class Install
 	 *
 	 * @return string
 	 */
-	public static function run()
+	public static function run($options = array())
 	{
-
-		$db_host = \Cli::prompt("What's your database's host (usually localhost)");
-		$db_name = \Cli::prompt("What about your database's name?");
-		$db_username = \Cli::prompt("Your username for the database?");
-		$db_password = \Cli::prompt("Lastly, you're databases password?");
-
-		self::success("Trying to connect to your database...");
+		if(empty($options))
+		{
+			$db_host = \Cli::prompt("What's your database's host (usually localhost)");
+			$db_name = \Cli::prompt("What about your database's name?");
+			$db_username = \Cli::prompt("Your username for the database?");
+			$db_password = \Cli::prompt("Lastly, you're databases password?");			
+		}
+		else
+		{
+			extract($options);
+		}
 
 		\File::copy(APPPATH."config/development/db_template.php", APPPATH."config/development/db.php");
 		$file_content = \File::read(APPPATH."config/development/db.php", true);
@@ -58,8 +62,6 @@ class Install
 		$file_content = str_replace("__db_password__", $db_password, $file_content);
 		
 		\File::update(APPPATH."config/development", 'db.php', $file_content);
-
-		self::success("Building your database...");
 
 		\Migrate::latest('default', 'app');
 		\Migrate::latest('auth', 'package');
@@ -74,27 +76,9 @@ class Install
 
 		\Config::set("routes._root_", "/pages/load/".$page->clean_name);
 		\Config::save("routes", "routes");
-		\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($pages as $page) { echo ${$page}; }');
+		\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($blocks as $block) { echo ${$block}; }');
 
-		\Cli::write("Let's add an aministrator! This is going to be you, so we're going to need some information.");
-		$admin_username = \Cli::prompt("First off, choose a username");
-		$admin_email = \Cli::prompt("Now give me your email address");
-		$admin_password = \Cli::prompt("Finally, make a password");
-		$admin_password2 = \Cli::prompt("Type it again to be sure");
-		while($admin_password != $admin_password2)
-		{
-			self::error("Whoops! Your passwords didn't match. Try again.");
-			$admin_password = \Cli::prompt("Finally, make a password");
-			$admin_password2 = \Cli::prompt("Type it again to be sure");
-		}
-		\Auth::create_user(
-		    $admin_username,
-		    $admin_password,
-		    $admin_email,
-		    100
-		);
-
-		self::success("You're all set! Have fun!");
+		die();
 	}
 
 	/**
@@ -106,9 +90,8 @@ class Install
 	 *
 	 * @return string
 	 */
-	public static function with_admin($username, $email, $password)
+	public static function create_admin($username, $email, $password)
 	{
-		self::run();
 
 		// create a new user
 		\Auth::create_user(
