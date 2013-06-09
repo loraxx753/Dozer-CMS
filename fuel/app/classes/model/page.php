@@ -9,6 +9,7 @@ class Model_Page extends \Orm\Model
 		'clean_name',
 		'parent_id',
 		'published',
+		'url',
 		'created_at',
 		'updated_at',
 	);

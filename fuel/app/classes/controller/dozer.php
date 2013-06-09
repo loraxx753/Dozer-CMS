@@ -27,7 +27,7 @@ class Controller_Dozer extends Controller_Template
 						"admin_email" => $_POST['admin_email'],
 						"admin_password" => $_POST['admin_password'],
 					);
-					self::create_admin($options['admin_username'], $options['admin_email'], $options['admin_passwordr']);
+					self::create_admin($options['admin_username'], $options['admin_email'], $options['admin_password']);
 					\Config::set("routes._root_", "/pages/load/index");
 					\Config::save("routes", "routes");
 				}
@@ -52,6 +52,10 @@ class Controller_Dozer extends Controller_Template
 		{
 			extract($options);
 		}
+		if(is_file(APPPATH."config/development/db.php"))
+		{
+			\File::delete(APPPATH."config/development/db.php");
+		}
 
 		\File::copy(APPPATH."config/development/db_template.php", APPPATH."config/development/db.php");
 		$file_content = \File::read(APPPATH."config/development/db.php", true);
@@ -65,17 +69,21 @@ class Controller_Dozer extends Controller_Template
 		\Migrate::latest('default', 'app');
 		\Migrate::latest('auth', 'package');
 
-		$name = "index";
+		$name = "Main Page";
 		$page = \Model_Page::forge();
 		$page->name = $name;
 		$page->parent_id = 0;
-		$page->published = 0;
+		$page->published = 1;
+		$page->url = "/";
 		$page->clean_name = \Inflector::friendly_title($name, "_", true);
 		$page->save();
 
 		\Config::set("routes._root_", "/pages/load/".$page->clean_name);
 		\Config::save("routes", "routes");
-		\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($blocks as $block) { echo ${$block}; }');
+		if(!is_file(APPPATH."views/pages/load/".$page->clean_name.".php"))
+		{
+			\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($blocks as $block) { echo ${$block}; }');
+		}
 	}
 
 	public static function create_admin($username, $email, $password)

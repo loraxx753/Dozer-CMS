@@ -17,7 +17,7 @@ class Controller_Admin_Create extends Controller_Admin
 		$page->save();
 		\Config::set("routes.".$page->clean_name, "/pages/load/".$page->clean_name);
 		\Config::save("routes", "routes");
-		\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($pages as $page) { echo ${$page}; }');
+		\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($blocks as $block) { echo ${$block}; }');
 		echo $page->clean_name;
 	}
 

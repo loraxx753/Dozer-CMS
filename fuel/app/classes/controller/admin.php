@@ -13,6 +13,12 @@ class Controller_Admin extends Controller_Base
 	{
 		\Casset::js("profile.js");
 		\Casset::js("change-css.js");
+		$data['pages'] = \Model_Page::find()
+			->where("clean_name", "!=", "index")
+			->get();
+		$data['models'] = array();
+
+		$data['data'] = $data;
 		$data['social_media'] = \Config::get("portfolio.profile.social-media");
 
 		$this->template->title = 'Admin &raquo; Index';

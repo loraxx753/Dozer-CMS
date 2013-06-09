@@ -40,9 +40,9 @@ class Controller_Pages extends Controller_Base
 		{
 			$this->template->published = true;
 		}
-		$this->template->title = ($currentPage->name == "index") ? "Kevin Baugh" : $currentPage->name;
+		$this->template->title = ($currentPage->name == "main_page") ? "Kevin Baugh" : $currentPage->name;
 		$segments = Uri::segments();
-		$segments = (count($segments)) ? $segments : array('index');
+		$segments = (count($segments)) ? $segments : array('main_page');
 		$this->template->content = View::forge('pages/load/'.implode("/", $segments), $data, false);
 	}
 
