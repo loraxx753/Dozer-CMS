@@ -1,1 +1,0 @@
-<p class="center"><?=Asset::img("logo_big.png")?></p>

@@ -11,14 +11,29 @@ class Controller_Admin_Create extends Controller_Admin
 		$name = Input::post("name");
 		$page = Model_Page::forge();
 		$page->name = $name;
-		$page->parent_id = 0;
+		$page->parent_id = Input::post("parent_id");
 		$page->published = 0;
 		$page->clean_name = \Inflector::friendly_title($name, "_", true);
+		$page->url = "/$page->clean_name";
 		$page->save();
 		\Config::set("routes.".$page->clean_name, "/pages/load/".$page->clean_name);
 		\Config::save("routes", "routes");
 		\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($blocks as $block) { echo ${$block}; }');
-		echo $page->clean_name;
+		$parent_pages = \Model_Page::query()
+			->where(array("clean_name", "!=", "main_page"))
+			->where(array("id", "!=", $page->id))
+			->get();
+		foreach ($parent_pages as $parent_page) {
+			$pages[] = array("id" => $parent_page->id, "name"=>$parent_page->name);
+		}
+		echo json_encode(array(
+			"name" => $page->name,
+			"parent_id" => $page->parent_id,
+			"published" => $page->published,
+			"clean_name" => $page->clean_name,
+			"url" => $page->url,
+			"pages" => $pages
+		));
 	}
 
 	public function post_block()
@@ -43,6 +58,7 @@ class Controller_Admin_Create extends Controller_Admin
 		$page->name = $name;
 		$page->parent_id = $parent->id;
 		$page->published = 0;
+		$page->url = "/$parent->clean_name/$page->clean_name";
 		$page->clean_name = \Inflector::friendly_title($name, "_", true);
 		$page->save();
 		\Config::set("routes.".$parent->clean_name."/".$page->clean_name, "/pages/load/".$parent->clean_name."/".$page->clean_name);

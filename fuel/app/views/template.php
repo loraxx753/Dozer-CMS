@@ -37,7 +37,7 @@
 			</li>
 				<?php } ?>
 				<?php if(\Auth::member(100)) { ?>
-				<li><a href="#" id="newpage">New Page+</a></li>
+				<li><a href="#" class="newpage">New Page+</a></li>
 				<?php } ?>
 			</ul>
 			<?php if(\Auth::member(100)) { ?>

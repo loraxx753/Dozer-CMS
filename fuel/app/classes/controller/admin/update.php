@@ -102,4 +102,50 @@ class Controller_Admin_Update extends Controller_Admin
 		$pageContent->contents = $content;
 		$pageContent->save();		
 	}
+
+	public function post_pages()
+	{
+		$pages = Input::post("pages");
+		$models = Model_Page::find("all");
+		foreach ($models as $model) {
+			if(isset($pages[$model->id]['parent_id']))
+			{
+				Config::delete('routes.'.substr($model->url, 1));
+				$model->parent_id = $pages[$model->id]['parent_id'];
+				$parent_id = $model->parent_id;
+				$parents = array();
+				while($parent_id > 0)
+				{
+					$parent = Model_Page::find($parent_id);
+					$parents[] = $parent->clean_name;
+					$parent_id = $parent->parent_id;
+				}
+				$parent_string = "/".implode("/", array_reverse($parents));
+				if(!is_dir(APPPATH."views/pages/load".$parent_string))
+				{
+					mkdir(APPPATH."views/pages/load".$parent_string);
+				}
+				\File::rename(APPPATH."views/pages/load".$model->url.".php", APPPATH."views/pages/load".$parent_string."/".$model->clean_name.".php");
+				if($model->parent_id > 0)
+				{
+					$model->url = $parent_string."/".$model->clean_name;
+				}
+				else
+				{
+					$model->url = "/".$model->clean_name;					
+				}
+
+
+				\Config::set('routes.'.substr($model->url, 1), "/pages/load".$model->url);
+				\Config::save("routes", "routes");
+			}
+			if(!empty($pages[$model->id]['published']))
+			{
+				$model->published = $pages[$model->id]['published'];
+			}
+
+			$model->save();
+
+		}
+	}
 }

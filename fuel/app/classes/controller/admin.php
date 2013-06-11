@@ -6,6 +6,7 @@ class Controller_Admin extends Controller_Base
 	public function before() 
 	{
 		parent::before();
+		\Casset::js("admin.js");
 		if (!\Auth::member(100)) throw new HttpNotFoundException;
 	}
 
