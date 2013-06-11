@@ -139,13 +139,20 @@ class Controller_Admin_Update extends Controller_Admin
 				\Config::set('routes.'.substr($model->url, 1), "/pages/load".$model->url);
 				\Config::save("routes", "routes");
 			}
-			if(!empty($pages[$model->id]['published']))
+			if(isset($pages[$model->id]['published']))
 			{
 				$model->published = $pages[$model->id]['published'];
 			}
 
 			$model->save();
-
 		}
+		$pages = Model_Page::query()
+			->where("parent_id", "0")
+			->where("name", "!=", "index")
+				->related("sub_pages")
+			->get();
+
+		echo View::forge("dozer/navigation", array("pages" => $pages, "currentPage" => ""), false)->render();
+
 	}
 }

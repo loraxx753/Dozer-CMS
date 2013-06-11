@@ -27,7 +27,8 @@
       return $.post("/admin/update/pages", {
         "pages": pages
       }, function(data) {
-        return update_page($el);
+        update_page($el);
+        return $("nav").html(data);
       });
     }
   };

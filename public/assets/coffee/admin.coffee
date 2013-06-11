@@ -19,6 +19,7 @@ update_page = ($el) ->
 			"pages" : pages
 			(data) ->
 				update_page $el
+				$("nav").html data
 
 $(".update_pages").on "click", (e) ->
 	update_page $(@)

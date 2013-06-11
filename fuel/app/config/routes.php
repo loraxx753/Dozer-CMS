@@ -5,5 +5,5 @@ return array(
 	'admin-login' => '/pages/login',
 	'logout' => '/pages/logout',
 	'about' => '/pages/load/about',
-	'about/resume' => '/pages/load/about/resume',
+	'resume' => '/pages/load/resume',
 );
