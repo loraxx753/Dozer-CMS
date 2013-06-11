@@ -7,31 +7,32 @@ class Controller_Dozer extends Controller_Template
 		$this->template = null;
 		if(Input::method() == "POST")
 		{
-			if(isset($_POST['action']))
-			{
-				if($_POST['action'] == "setup_database")
-				{
-					$options = array(
-						"db_host" => $_POST['db_host'],
-						"db_name" => $_POST['db_name'],
-						"db_username" => $_POST['db_username'],
-						"db_password" => $_POST['db_password'],
-					);
-					self::build($options);
-				}
+			$database_options = array(
+				"db_host" => $_POST['db_host'],
+				"db_name" => $_POST['db_name'],
+				"db_username" => $_POST['db_username'],
+				"db_password" => $_POST['db_password'],
+			);
+			$admin_options = array(
+					"admin_username" => $_POST['admin_username'],
+					"admin_email" => $_POST['admin_email'],
+					"admin_password" => $_POST['admin_password'],
+			);
 
-				if($_POST['action'] == "setup_admin")
-				{
-					$options = array(
-						"admin_username" => $_POST['admin_username'],
-						"admin_email" => $_POST['admin_email'],
-						"admin_password" => $_POST['admin_password'],
-					);
-					echo self::create_admin($options['admin_username'], $options['admin_email'], $options['admin_password']);
-					\Config::set("routes._root_", "/pages/load/main_page");
-					\Config::save("routes", "routes");
-				}
-			}
+			self::build($database_options, $admin_options, function($admin_options) {
+				$username = $admin_options['admin_username'];
+				$email = $admin_options['admin_email'];
+				$password = $admin_options['admin_password'];
+				// create a new user
+				\Auth::create_user(
+				    $username,
+				    $password,
+				    $email,
+				    100
+				);
+				\Config::set("routes._root_", "/pages/load/main_page");
+				\Config::save("routes", "routes");
+			});
 		}
 		else
 		{
@@ -39,7 +40,7 @@ class Controller_Dozer extends Controller_Template
 		}
 	}
 
-	public function build($options = array())
+	public function build($options = array(), $admin_options=array(), $callback)
 	{
 		if(empty($options))
 		{
@@ -82,19 +83,10 @@ class Controller_Dozer extends Controller_Template
 		{
 			\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($blocks as $block) { echo ${$block}; }');
 		}
+
+		if(isset($callback))
+		{
+			$callback($admin_options);
+		}
 	}
-
-	public static function create_admin($username, $email, $password)
-	{
-
-		// create a new user
-		\Auth::create_user(
-		    $username,
-		    $password,
-		    $email,
-		    100
-		);
-	}
-
-
 }
