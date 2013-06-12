@@ -3,7 +3,7 @@ return array(
 	'bootswatch' => NULL,
 	'profile' => 
 	array(
-		'name' => 'Kevin Baugh',
+		'name' => 'Dozer',
 		'email' => 'sdfsdf',
 		'picture' => 'profile.jpg',
 		'phone' => 'sdfsdfsdf',

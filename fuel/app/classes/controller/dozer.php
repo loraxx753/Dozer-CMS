@@ -68,13 +68,14 @@ class Controller_Dozer extends Controller_Template
 			{
 				return "Password's don't match!";
 			}
+			echo $admin_username, $admin_password, $admin_email;
 			try
 			{
 				// create a new user
 				\Auth::create_user(
 				    $admin_username,
-				    $admin_email,
 				    $admin_password,
+				    $admin_email,
 				    100
 				);
 			}
