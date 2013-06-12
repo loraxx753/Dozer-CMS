@@ -40,77 +40,97 @@
 <script src="/assets/js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function() {
-	$("#setup").on("click", function(e) {
-		e.preventDefault();
-		var options = {
-			"db_host"     : $("#db_host").val(),
-			"db_name"     : $("#db_name").val(),
-			"db_username" : $("#db_username").val(),
-			"db_password" : $("#db_password").val(),
+	function build_error(message)
+	{
+		return '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Error!</strong> '+message+'</div><a class="close" data-dismiss="alert" href="#">&times;</a>';
+	}
+	function process(options, popup, element, callback)
+	{
+		var $form = $(element).closest("form");
+		inputs = $form.find("input");
+		valid = true;
+		for(i=0;i < inputs.length; i++)
+		{
+			if(!inputs[i].checkValidity())
+			{
+				valid = false;
+			}
+		}
+		if(!valid)
+		{
+			$form.find("input[type=submit]").click();
+			return false;
+		}
 
-			"admin_username"  : $("#admin_username").val(),
-			"admin_email"     : $("#admin_email").val(),
-			"admin_password"  : $("#admin_password").val(),
-			"admin_password2" : $("#admin_password2").val()
-		};
-		$("#progressModal .text").text("Setting up database and administrator, so you can do things.");
+		$("#progressModal .text").text(popup);
 		$('#progressModal').modal({
 			'backdrop' : 'static',
 			'keyboard' : 'false'
 		});
 		$('#progressModal').modal('show');
 		$.post("/", options, function(data) {
-			$("#progressModal").modal('hide');
-			window.location="/";
-		});
-	});
-
-	// $("content form").on("submit", function(e) {
-	// 	console.log("here");
-	// 	e.preventDefault();
-	// 	var $page = $(this).closest(".page");
-	// 	var $page2 = $page.next();
-	// 	// Hide the first page by sliding it to the left.
-	// 	$page.hide('slide', {direction : 'left'});
-	// 	// Then show the second by sliding it out from the right.
-	// 	$page2.show('slide', {direction : 'right'});
-	// });
-	$('.content .next').on("click", function(e) {
-		$(".invalid").removeClass("invalid");
-		if($(this).closest("form").length > 0)
-		{
-			inputs = $(this).closest("form").find("input");
-			valid = true;
-			for(i=0;i < inputs.length; i++)
+			$('#progressModal').modal('hide');
+			if(data != "success")
 			{
-				if(!inputs[i].checkValidity())
-				{
-					$(inputs[i]).addClass("invalid");
-					valid = false;
-				}
+				var error = build_error(data);
+				$(".page:visible").children(".content").prepend(error);
+				$(".alert").alert();
 			}
-			console.log(valid);
-
-			if(valid)
+			else
 			{
-				var $page = $(this).closest(".page");
+				var $page = $(".page:visible");
 				var $page2 = $page.next();
 				// Hide the first page by sliding it to the left.
 				$page.hide('slide', {direction : 'left'});
 				// Then show the second by sliding it out from the right.
-				$page2.show('slide', {direction : 'right'});											
+				$page2.show('slide', {direction : 'right'});
+				if(callback)
+				{
+					callback();
+				}
 			}
-		}
-		else
-		{
-			var $page = $(this).closest(".page");
-			var $page2 = $page.next();
-			// Hide the first page by sliding it to the left.
-			$page.hide('slide', {direction : 'left'});
-			// Then show the second by sliding it out from the right.
-			$page2.show('slide', {direction : 'right'});		
-		}
+		});
+
+	}
+
+	$("form").on("submit", function(e) {
 		e.preventDefault();
+	});
+	$("#admin_setup").on("click", function(e) {
+		e.preventDefault();
+		var options = {
+			"action"	      : "admin_setup",
+			"admin_username"  : $("#admin_username").val(),
+			"admin_email"     : $("#admin_email").val(),
+			"admin_password"  : $("#admin_password").val(),
+			"admin_password2" : $("#admin_password2").val()
+		};
+		var popup = "Setting up administrator, so you can do things.";
+		process(options, popup, this, function() {
+			window.location="/";
+		});
+	});
+
+	$("#submit_database").on("click", function(e) {
+		var options = {
+			"action"	  : "database_setup",
+			"db_host"     : $("#db_host").val(),
+			"db_name"     : $("#db_name").val(),
+			"db_username" : $("#db_username").val(),
+			"db_password" : $("#db_password").val()
+		};
+		var popup = "Setting up database, so things work.";
+		process(options, popup, this);
+	});
+
+	$('.content .next').on("click", function(e) {
+		e.preventDefault();
+		var $page = $(this).closest(".page");
+		var $page2 = $page.next();
+		// Hide the first page by sliding it to the left.
+		$page.hide('slide', {direction : 'left'});
+		// Then show the second by sliding it out from the right.
+		$page2.show('slide', {direction : 'right'});		
 	});
 
 });
@@ -140,7 +160,8 @@ $(document).ready(function() {
 						<p><label for="db_username">Database Username: </label><input type="text" name="db_username" id="db_username" placeholder="root" required></p>
 						<p><label for="db_password">Database Password: </label><input type="password" name="db_password" id="db_password" placeholder="root" required></p>
 					</fieldset>
-					<p><input class="btn btn-success next" type="submit" value="Set Database" /></p>
+					<p><button class="btn btn-success" id="submit_database">Set Database</button></p>
+					<input type="submit" id="hidden_db_submit" style="display:none;" />
 				</form>
 			</div>
 		</div>
@@ -154,7 +175,7 @@ $(document).ready(function() {
 						<p><label for="admin_password">Administrator Password: </label><input type="password" name="admin_password" id="admin_password" placeholder="Password"></p>
 						<p><label for="admin_password2">Re-type Password: </label><input type="password" name="admin_password2" id="admin_password2" placeholder="Retype Password"></p>
 					</fieldset>
-					<p><input class="btn btn-success next" type="submit" id="setup" value="Finish Up" /></p>
+					<p><input class="btn btn-success" type="submit" id="admin_setup" value="Finish Up" /></p>
 				</form>
 			</div>
 		</div>
