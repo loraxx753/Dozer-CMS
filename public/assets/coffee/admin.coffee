@@ -36,6 +36,7 @@ $(".admin_newpage").on "click", (e)->
 				"parent_id" : -1
 				(data) ->
 					$.post "/assets/snippets/page_row.html", (text)->
+						console.log text
 						text = text
 								.replace(/__page_id__/g, data.id)
 								.replace(/__page_name__/g, data.name)

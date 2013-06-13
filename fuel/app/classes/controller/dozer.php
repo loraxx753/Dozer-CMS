@@ -11,11 +11,11 @@ class Controller_Dozer extends Controller_Template
 			$error = self::build($options);
 			if($error)
 			{
-				echo $error;
+				echo json_encode(array("error" => $error));
 			}
 			else
 			{
-				echo "success";
+				echo json_encode(array("success" => true));
 			}
 		}
 		else
@@ -68,7 +68,6 @@ class Controller_Dozer extends Controller_Template
 			{
 				return "Password's don't match!";
 			}
-			echo $admin_username, $admin_password, $admin_email;
 			try
 			{
 				// create a new user
@@ -97,8 +96,10 @@ class Controller_Dozer extends Controller_Template
 			{
 				\File::create(APPPATH."views/pages/load", $page->clean_name.".php", '<?php foreach($blocks as $block) { echo ${$block}; }');
 			}
-				\Config::set("routes._root_", "/pages/load/main_page");
-				\Config::save("routes", "routes");
+			\Config::set("routes._root_", "/pages/load/main_page");
+			\Config::save("routes", "routes");
+
+			\Auth::login($admin_username, $admin_password);
 		}
 	}
 }

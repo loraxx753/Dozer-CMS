@@ -51,6 +51,7 @@
           return $.post("/assets/snippets/page_row.html", function(text) {
             var $real_select, $temp_select, $text, page, _i, _len, _ref;
 
+            console.log(text);
             text = text.replace(/__page_id__/g, data.id).replace(/__page_name__/g, data.name).replace(/__page_url__/g, data.url);
             $text = $("<div></div>").append(text);
             $temp_select = $text.find(".parent_page_temp");

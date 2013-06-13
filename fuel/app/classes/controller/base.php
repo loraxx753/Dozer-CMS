@@ -6,12 +6,7 @@ class Controller_Base extends Controller_Template
 	public function before()
 	{
 		parent::before();
-		// $this->template->pages = array(
-		// 	"about",
-		// 	"projects",
-		// 	"resume",
-		// 	"contact"
-		// );
+
 		$pages = Model_Page::query()
 			->where("parent_id", "0")
 			->where("name", "!=", "index")

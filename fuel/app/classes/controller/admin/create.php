@@ -23,6 +23,7 @@ class Controller_Admin_Create extends Controller_Admin
 			->where(array("clean_name", "!=", "main_page"))
 			->where(array("id", "!=", $page->id))
 			->get();
+		$pages = array();
 		foreach ($parent_pages as $parent_page) {
 			$pages[] = array("id" => $parent_page->id, "name"=>$parent_page->name);
 		}

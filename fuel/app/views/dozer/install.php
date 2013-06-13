@@ -70,7 +70,7 @@ $(document).ready(function() {
 		$('#progressModal').modal('show');
 		$.post("/", options, function(data) {
 			$('#progressModal').modal('hide');
-			if(data != "success")
+			if(!data.success)
 			{
 				var error = build_error(data);
 				$(".page:visible").children(".content").prepend(error);
@@ -89,7 +89,7 @@ $(document).ready(function() {
 					callback();
 				}
 			}
-		});
+		}, 'json');
 
 	}
 
@@ -107,7 +107,7 @@ $(document).ready(function() {
 		};
 		var popup = "Setting up administrator, so you can do things.";
 		process(options, popup, this, function() {
-			window.location="/";
+			window.location="/admin";
 		});
 	});
 

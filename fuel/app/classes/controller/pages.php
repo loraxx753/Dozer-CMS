@@ -12,16 +12,9 @@ class Controller_Pages extends Controller_Base
 
 	public function action_load($clean_name) {
 		$currentPage = Model_Page::query();
-		if($this->param("subpage")) 
-		{
-			$parent_page = $clean_name;
-			$clean_name = $this->param('subpage');
-			$parent = Model_Page::query()->where("clean_name", $parent_page)->get_one();
-			$currentPage->where("parent_id", $parent->id);
-		}
 		$data = array();
 		$currentPage
-			->where("clean_name", $clean_name)
+			->where("url", "/".Uri::string())
 			->related("page_contents");
 		$currentPage = $currentPage->get_one();
 		\Casset::js_inline("var page_is_published=".(($currentPage->published) ? "true" : "false").";");
