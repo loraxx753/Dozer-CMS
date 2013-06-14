@@ -72,7 +72,7 @@ $(document).ready(function() {
 			$('#progressModal').modal('hide');
 			if(!data.success)
 			{
-				var error = build_error(data);
+				var error = build_error(data.error);
 				$(".page:visible").children(".content").prepend(error);
 				$(".alert").alert();
 			}

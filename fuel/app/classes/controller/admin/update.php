@@ -146,13 +146,25 @@ class Controller_Admin_Update extends Controller_Admin
 
 			$model->save();
 		}
-		$pages = Model_Page::query()
-			->where("parent_id", "0")
+		$new_pages = Model_Page::query()
 			->where("name", "!=", "index")
 				->related("sub_pages")
 			->get();
-
-		echo View::forge("dozer/navigation", array("pages" => $pages, "currentPage" => ""), false)->render();
+		$urls = array();
+		$top_pages = array();
+		foreach ($new_pages as $new_page) {
+			$urls[$new_page->id] = $new_page->url;
+			if($new_page->parent_id == 0)
+			{
+				$top_pages[] = $new_page;
+			}
+		}
+		echo json_encode(
+				array(
+					"html" => View::forge("dozer/navigation", array("pages" => $top_pages, "currentPage" => ""), false)->render(), 
+					"urls" => $urls
+				)
+			);
 
 	}
 }

@@ -19,7 +19,12 @@ update_page = ($el) ->
 			"pages" : pages
 			(data) ->
 				update_page $el
-				$("nav").html data
+				$("nav").html data.html
+				console.log data
+				$(".page_row").each ->
+					id = $(@).data("id");
+					$(@).find(".url").html '<a href="'+data.urls[id]+'">'+data.urls[id]+"</a>"
+			"json"
 
 $(".update_pages").on "click", (e) ->
 	update_page $(@)

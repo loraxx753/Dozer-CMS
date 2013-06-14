@@ -28,6 +28,7 @@ class Controller_Admin_Create extends Controller_Admin
 			$pages[] = array("id" => $parent_page->id, "name"=>$parent_page->name);
 		}
 		echo json_encode(array(
+			"id" => $page->id,
 			"name" => $page->name,
 			"parent_id" => $page->parent_id,
 			"published" => $page->published,

@@ -11,7 +11,7 @@
 <?php foreach($pages as $page) {?>
 		<tr class="page_row" data-id="<?=$page->id?>">
 			<td><?=$page->name?></td>
-			<td><a href="<?=$page->url?>"><?=$page->url?></a></td>
+			<td class="url"><a href="<?=$page->url?>"><?=$page->url?></a></td>
 			<td>
 				<?php if($page->name != "Main Page") { ?>
 				<select class="parent_id">

@@ -28,8 +28,15 @@
         "pages": pages
       }, function(data) {
         update_page($el);
-        return $("nav").html(data);
-      });
+        $("nav").html(data.html);
+        console.log(data);
+        return $(".page_row").each(function() {
+          var id;
+
+          id = $(this).data("id");
+          return $(this).find(".url").html('<a href="' + data.urls[id] + '">' + data.urls[id] + "</a>");
+        });
+      }, "json");
     }
   };
 
