@@ -261,6 +261,7 @@ return array(
 			'orm',
 			'auth',
 			'fuel-casset',
+			'dozer',
 		),
 
 		/**

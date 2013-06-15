@@ -14,10 +14,10 @@ class Controller_Admin extends Controller_Base
 	{
 		\Casset::js("profile.js");
 		\Casset::js("change-css.js");
-		$data['pages'] = \Model_Page::find()
+		$data['pages'] = \Dozer\Model_Page::find()
 			->where("clean_name", "!=", "index")
 			->get();
-		$data['models'] = array();
+		$data['models'] = \Dozer\Model_Model::find('all');
 
 		$data['data'] = $data;
 		$data['social_media'] = \Config::get("portfolio.profile.social-media");

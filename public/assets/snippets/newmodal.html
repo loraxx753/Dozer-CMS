@@ -1,0 +1,27 @@
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">New Model</h3>
+	</div>
+	<div class="modal-body">
+		<form class="model_form">
+			<p><input type="text" id="newPageName" name="name" placeholder="Name" /></p>
+			<fieldset>
+				<legend>Fields</legend>
+				<p class="fields"><input type="text" placeholder="Field Name"/> Type: 
+					<select>
+						<option value="default">-- Choose Type --</option>
+						<option value="int">Number</option>
+						<option value="string">String</option>
+						<option value="text">Text</option>
+					</select>
+				</p>
+				<p><button id="add_field" class="btn btn-primary">Add field</button></p>
+			</fieldset>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		<button class="btn btn-primary" data-dismiss="modal" id="newModelSave">Save changes</button>
+	</div>
+</div>

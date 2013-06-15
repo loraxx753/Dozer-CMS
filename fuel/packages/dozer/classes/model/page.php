@@ -1,5 +1,18 @@
-
 <?php
+/**
+ * Fuel
+ *
+ * Fuel is a fast, lightweight, community driven PHP5 framework.
+ *
+ * @package    Fuel
+ * @version    1.6
+ * @author     Fuel Development Team
+ * @license    MIT License
+ * @copyright  2010 - 2013 Fuel Development Team
+ * @link       http://fuelphp.com
+ */
+
+namespace Dozer;
 
 class Model_Page extends \Orm\Model
 {
@@ -30,7 +43,7 @@ class Model_Page extends \Orm\Model
 		'page_contents',
 		'sub_pages' => array(
 			'key_from' => 'id',
-			'model_to' => 'Model_Page',
+			'model_to' => '\Dozer\Model_Page',
 			'key_to' => 'parent_id',
 			'cascade_save' => false,
 			'cascade_delete' => false,

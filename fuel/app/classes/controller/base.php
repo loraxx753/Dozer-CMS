@@ -7,7 +7,7 @@ class Controller_Base extends Controller_Template
 	{
 		parent::before();
 
-		$pages = Model_Page::query()
+		$pages = \Dozer\Model_Page::query()
 			->where("parent_id", "0")
 			->where("name", "!=", "index")
 				->related("sub_pages");

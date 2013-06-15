@@ -11,7 +11,7 @@ class Controller_Pages extends Controller_Base
 	}
 
 	public function action_load($clean_name) {
-		$currentPage = Model_Page::query();
+		$currentPage = \Dozer\Model_Page::query();
 		$data = array();
 		$currentPage
 			->where("url", "/".Uri::string())
