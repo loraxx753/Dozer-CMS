@@ -63,6 +63,25 @@ class Generate
 
 		$contents = '';
 
+		$contents = <<<CONTENTS
+	protected static \$_properties = \Config::get("dozer_model::$singular);
+CONTENTS;
+
+
+		$contents .= <<<CONTENTS
+
+	protected static \$_observers = array(
+		'Orm\Observer_CreatedAt' => array(
+			'events' => array('before_insert'),
+			'mysql_timestamp' => false
+		),
+		'Orm\Observer_UpdatedAt' => array(
+			'events' => array('before_update'),
+			'mysql_timestamp' => false
+		),
+	);
+CONTENTS;
+
 
 		$contents .= <<<CONTENTS
 
@@ -85,7 +104,7 @@ MODEL;
 		// Build the model
 		static::create($filepath, $model, 'model');
 
-		$build and static::build();
+		static::build();
 	}
 
 	public static function build()
@@ -97,8 +116,6 @@ MODEL;
 
 		foreach (static::$create_files as $file)
 		{
-			\Cli::write("\tCreating {$file['type']}: {$file['path']}", 'green');
-
 			if ( ! $handle = @fopen($file['path'], 'w+'))
 			{
 				throw new Exception('Cannot open file: '. $file['path']);

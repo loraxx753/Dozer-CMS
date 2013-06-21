@@ -56,10 +56,9 @@ class Install
 				\Migrate::latest('dozer', 'package');
 				\Migrate::latest('auth', 'package');
 			}
-			catch(Database_Exception $e)
+			catch(\Database_Exception $e)
 			{
 				return "It seems like your database isn't connecting. Better check those inputs.";
-
 			}
 		}
 		else if($action == "admin_setup")

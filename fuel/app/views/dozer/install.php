@@ -170,10 +170,10 @@ $(document).ready(function() {
 			<div class="content">
 				<form method="post">
 					<fieldset>
-						<p><label for="admin_username">Administrator Username: </label><input type="text" name="admin_username" id="admin_username" placeholder="Username"></p>
-						<p><label for="admin_email">Administrator Email: </label><input type="text" name="admin_email" id="admin_email" placeholder="Email"></p>
-						<p><label for="admin_password">Administrator Password: </label><input type="password" name="admin_password" id="admin_password" placeholder="Password"></p>
-						<p><label for="admin_password2">Re-type Password: </label><input type="password" name="admin_password2" id="admin_password2" placeholder="Retype Password"></p>
+						<p><label for="admin_username">Administrator Username: </label><input type="text" name="admin_username" id="admin_username" placeholder="Username" required></p>
+						<p><label for="admin_email">Administrator Email: </label><input type="email" name="admin_email" id="admin_email" placeholder="Email" required></p>
+						<p><label for="admin_password">Administrator Password: </label><input type="password" name="admin_password" id="admin_password" placeholder="Password" required></p>
+						<p><label for="admin_password2">Re-type Password: </label><input type="password" name="admin_password2" id="admin_password2" placeholder="Retype Password" required></p>
 					</fieldset>
 					<p><input class="btn btn-success" type="submit" id="admin_setup" value="Finish Up" /></p>
 				</form>

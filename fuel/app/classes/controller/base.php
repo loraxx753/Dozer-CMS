@@ -6,7 +6,6 @@ class Controller_Base extends Controller_Template
 	public function before()
 	{
 		parent::before();
-
 		$pages = \Dozer\Model_Page::query()
 			->where("parent_id", "0")
 			->where("name", "!=", "index")
