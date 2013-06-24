@@ -27,7 +27,7 @@ class Controller_Pages extends Controller_Base
 			$data['blocks'][] = $friendly_title;
 		}
 
-		if (\Auth::member(100)) \Casset::enable_js("editor");
+		if (\Auth::member(100)) \Casset::enable_js(array("hallo", "editor"));
 
 		if($currentPage->published == "1")
 		{

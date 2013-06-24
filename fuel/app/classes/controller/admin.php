@@ -6,6 +6,7 @@ class Controller_Admin extends Controller_Base
 	public function before() 
 	{
 		parent::before();
+		\Casset::enable_js("hallo");
 		\Casset::js("admin.js");
 		if (!\Auth::member(100)) throw new HttpNotFoundException;
 	}
@@ -17,7 +18,17 @@ class Controller_Admin extends Controller_Base
 		$data['pages'] = \Dozer\Model_Page::find()
 			->where("clean_name", "!=", "index")
 			->get();
-		$data['models'] = \Dozer\Model_Model::find('all');
+		$models = \Dozer\Model_Model::find('all');
+		foreach($models as $model)
+		{
+			$fields = explode(", ", $model->fields);
+			$model->fields = array();
+			foreach ($fields as $field) {
+				list($name, $type) = explode(":", $field);
+				$model->fields[$name] = $type;
+			}
+		}
+		$data['models'] = $models;
 
 		$data['data'] = $data;
 		$data['social_media'] = \Config::get("portfolio.profile.social-media");

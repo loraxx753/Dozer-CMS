@@ -1,9 +1,12 @@
+String.prototype.capitalize = () -> 
+    @.charAt(0).toUpperCase() + this.slice(1)
+
 new_modal = (url, callback) ->
 	$("body").append "<div id='modal_dump'></div>"
 	$("#modal_dump").load url, () ->
 		$('#myModal').modal()
 		if callback
-			callback()
+			callback($("#myModal"))
 
 update_page = ($el) ->
 	content = $el.parent().prev()
@@ -80,3 +83,66 @@ $("#admin_newmodel").on "click", (e)->
 			console.log args
 			$.post "/admin/create/model", {"args" : args }, (data)->
 				console.log(data);
+$(".add_entry").on "click", (e) ->
+	e.preventDefault()
+	$this = $(@)
+	id = $this.closest(".page_row").data("id")
+	name = $this.closest("td").prevUntil(".model_name").last().prev().text()
+	console.log $this.closest("td").prevUntil(".model_name").last().prev().text()
+	fields = {}
+	$this.closest("td").prevUntil(".field_list").prev().children("ul").children("li").each ->
+		fields[$(@).text()] = $(@).data('type')
+	new_modal "/assets/snippets/model_entry.html", ($modal)->
+		text = $modal.html()
+		text = text
+			.replace(/__Model_Name__/g, name.capitalize())
+		$modal.html(text)
+		for element, type of fields
+			$fieldClone = $(".model_"+type).clone();
+			$fieldClone.removeClass("hidden")
+			fieldtext = $fieldClone.html()
+			fieldtext = fieldtext
+				.replace(/__Column_Name__/g, element.capitalize())
+				.replace(/__column_name__/g, element)
+			$fieldClone.html(fieldtext)
+			$(".model_field_form").append($fieldClone)
+			if $fieldClone.hasClass("model_text")
+				$fieldClone.children(".content").hallo({
+					plugins: {
+						'halloformat': {},
+						'halloblock': {},
+						'hallojustify': {},
+						'hallolists': {},
+						'hallolink': {},
+						'halloreundo': {},
+						'halloimage': {
+							upload: (data) ->
+								return console.log("success");
+							,
+							uploadUrl: "/admin/imageupload"
+						}
+					},
+					editable: true,
+					toolbar: 'halloToolbarFixed'
+				});
+		$("#modelEntrySave").on "click", (e)->
+			e.preventDefault()
+			obj = {}
+			obj.name = name
+			obj.texts = for model in $(".model_field_form .model_text")
+				returned = {}
+				returned.name = $(model).children("p").data("name")
+				returned.content = $(model).find(".content").html()
+				returned
+			obj.ints = for model in $(".model_field_form .model_int")
+				returned = {}
+				returned.name = $(model).children("input").attr("id")
+				returned.content = $(model).children("input").val()
+				returned
+			obj.strings = for model in $(".model_field_form .model_string")
+				returned = {}
+				returned.name = $(model).children("input").attr("id")
+				returned.content = $(model).children("input").val()
+				returned
+			$.post "/admin/create/entry", obj, (data)->
+

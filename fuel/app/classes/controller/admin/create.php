@@ -38,4 +38,23 @@ class Controller_Admin_Create extends Controller_Admin
 		$args = \Input::post("args");
 		\Dozer\Generate::model($args);		
 	}
+
+	public function post_entry()
+	{
+		$name = "\Model_".\Inflector::singularize(ucwords(Input::post("name")));
+		$fields = array();
+		foreach (Input::post() as $post) {
+			if(gettype($post) == "array")
+			{
+				$fields = array_merge($fields, $post);
+			}
+		}
+		$model = new $name();
+		foreach ($fields as $field) {
+			$model->$field["name"] = $field["content"];
+		}
+		$model->updated_at = time();
+		$model->save();
+
+	}
 }

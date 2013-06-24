@@ -2,12 +2,16 @@
 (function() {
   var new_modal, update_page;
 
+  String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+  };
+
   new_modal = function(url, callback) {
     $("body").append("<div id='modal_dump'></div>");
     return $("#modal_dump").load(url, function() {
       $('#myModal').modal();
       if (callback) {
-        return callback();
+        return callback($("#myModal"));
       }
     });
   };
@@ -114,6 +118,106 @@
         }, function(data) {
           return console.log(data);
         });
+      });
+    });
+  });
+
+  $(".add_entry").on("click", function(e) {
+    var $this, fields, id, name;
+
+    e.preventDefault();
+    $this = $(this);
+    id = $this.closest(".page_row").data("id");
+    name = $this.closest("td").prevUntil(".model_name").last().prev().text();
+    console.log($this.closest("td").prevUntil(".model_name").last().prev().text());
+    fields = {};
+    $this.closest("td").prevUntil(".field_list").prev().children("ul").children("li").each(function() {
+      return fields[$(this).text()] = $(this).data('type');
+    });
+    return new_modal("/assets/snippets/model_entry.html", function($modal) {
+      var $fieldClone, element, fieldtext, text, type;
+
+      text = $modal.html();
+      text = text.replace(/__Model_Name__/g, name.capitalize());
+      $modal.html(text);
+      for (element in fields) {
+        type = fields[element];
+        $fieldClone = $(".model_" + type).clone();
+        $fieldClone.removeClass("hidden");
+        fieldtext = $fieldClone.html();
+        fieldtext = fieldtext.replace(/__Column_Name__/g, element.capitalize()).replace(/__column_name__/g, element);
+        $fieldClone.html(fieldtext);
+        $(".model_field_form").append($fieldClone);
+        if ($fieldClone.hasClass("model_text")) {
+          $fieldClone.children(".content").hallo({
+            plugins: {
+              'halloformat': {},
+              'halloblock': {},
+              'hallojustify': {},
+              'hallolists': {},
+              'hallolink': {},
+              'halloreundo': {},
+              'halloimage': {
+                upload: function(data) {
+                  return console.log("success");
+                },
+                uploadUrl: "/admin/imageupload"
+              }
+            },
+            editable: true,
+            toolbar: 'halloToolbarFixed'
+          });
+        }
+      }
+      return $("#modelEntrySave").on("click", function(e) {
+        var model, obj, returned;
+
+        e.preventDefault();
+        obj = {};
+        obj.name = name;
+        obj.texts = (function() {
+          var _i, _len, _ref, _results;
+
+          _ref = $(".model_field_form .model_text");
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            model = _ref[_i];
+            returned = {};
+            returned.name = $(model).children("p").data("name");
+            returned.content = $(model).find(".content").html();
+            _results.push(returned);
+          }
+          return _results;
+        })();
+        obj.ints = (function() {
+          var _i, _len, _ref, _results;
+
+          _ref = $(".model_field_form .model_int");
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            model = _ref[_i];
+            returned = {};
+            returned.name = $(model).children("input").attr("id");
+            returned.content = $(model).children("input").val();
+            _results.push(returned);
+          }
+          return _results;
+        })();
+        obj.strings = (function() {
+          var _i, _len, _ref, _results;
+
+          _ref = $(".model_field_form .model_string");
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            model = _ref[_i];
+            returned = {};
+            returned.name = $(model).children("input").attr("id");
+            returned.content = $(model).children("input").val();
+            _results.push(returned);
+          }
+          return _results;
+        })();
+        return $.post("/admin/create/entry", obj, function(data) {});
       });
     });
   });
